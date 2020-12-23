@@ -3,6 +3,7 @@ package com.ktg.usuarioSpring.controllers;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import com.ktg.usuarioSpring.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,14 +31,26 @@ public class UsuarioController {
 
     //Método para insertar un usuario
     @RequestMapping(value = "/", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     Usuario registrar(@RequestBody Usuario user){
         return usuarioService.registrar(user);
     }
 
     //Método para editar un usuario
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    Usuario editar(@RequestBody Usuario user){
-        return usuarioService.editar(user);
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    Usuario editar(@RequestBody Usuario user, @PathVariable long id){
+        Usuario usuarioActual = usuarioService.getUsuarioById(id);
+
+        usuarioActual.setUsuario(user.getUsuario());
+        usuarioActual.setApellido(user.getApellido());
+        usuarioActual.setDireccion(user.getDireccion());
+        usuarioActual.setNombre(user.getNombre());
+        usuarioActual.setPassword(user.getPassword());
+
+        System.out.println("Valores para editar: " + usuarioActual);
+        System.out.println("Valores actuales: " + user);
+        return usuarioService.editar(usuarioActual);
     }
 
     //Método para eliminar un usuario

@@ -26,6 +26,7 @@ public class UsuarioDaoImpl implements IUsuarioDao {
     @Transactional
     @Override
     public Usuario getUsuarioById(long id){
+
         return entityManager.find(Usuario.class, id);
     }
 
