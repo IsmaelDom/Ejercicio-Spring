@@ -19,6 +19,18 @@ public class Direccion {
     private String estado;
     private String referencia;
 
+    public Direccion() {
+    }
+
+    public Direccion(long id, String calle, String no_exterior, String cp, String estado, String referencia) {
+        this.id = id;
+        this.calle = calle;
+        this.no_exterior = no_exterior;
+        this.cp = cp;
+        this.estado = estado;
+        this.referencia = referencia;
+    }
+
     public long getId() {
         return id;
     }
@@ -65,5 +77,17 @@ public class Direccion {
 
     public void setReferencia(String referencia) {
         this.referencia = referencia;
+    }
+
+    @Override
+    public String toString() {
+        return "Direccion{" +
+                "id=" + id +
+                ", calle='" + calle + '\'' +
+                ", no_exterior='" + no_exterior + '\'' +
+                ", cp='" + cp + '\'' +
+                ", estado='" + estado + '\'' +
+                ", referencia='" + referencia + '\'' +
+                '}';
     }
 }

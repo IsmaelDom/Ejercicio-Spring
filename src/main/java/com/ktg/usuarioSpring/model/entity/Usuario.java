@@ -31,8 +31,9 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(long id, String usuario, String nombre, String apellido, String password) {
+    public Usuario(long id, Direccion direccion, String usuario, String nombre, String apellido, String password) {
         this.id = id;
+        this.direccion = direccion;
         this.usuario = usuario;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -85,5 +86,17 @@ public class Usuario {
 
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", direccion=" + direccion +
+                ", usuario='" + usuario + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
