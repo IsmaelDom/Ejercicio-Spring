@@ -1,5 +1,7 @@
 package com.ktg.usuarioSpring.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,8 +10,14 @@ public class Direccion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id_direccion", updatable = false, nullable = false)
     private long id;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     private String calle;
     private String no_exterior;
 
@@ -22,8 +30,9 @@ public class Direccion {
     public Direccion() {
     }
 
-    public Direccion(long id, String calle, String no_exterior, String cp, String estado, String referencia) {
+    public Direccion(long id, Usuario usuario, String calle, String no_exterior, String cp, String estado, String referencia) {
         this.id = id;
+        this.usuario = usuario;
         this.calle = calle;
         this.no_exterior = no_exterior;
         this.cp = cp;
@@ -79,15 +88,11 @@ public class Direccion {
         this.referencia = referencia;
     }
 
-    @Override
-    public String toString() {
-        return "Direccion{" +
-                "id=" + id +
-                ", calle='" + calle + '\'' +
-                ", no_exterior='" + no_exterior + '\'' +
-                ", cp='" + cp + '\'' +
-                ", estado='" + estado + '\'' +
-                ", referencia='" + referencia + '\'' +
-                '}';
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

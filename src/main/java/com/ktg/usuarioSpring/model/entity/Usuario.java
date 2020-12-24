@@ -1,7 +1,6 @@
 package com.ktg.usuarioSpring.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -11,13 +10,8 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id_usuario", updatable = false, nullable = false)
     private long id;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "direccion_id")
-    private Direccion direccion;
 
     private String usuario;
 
@@ -25,15 +19,14 @@ public class Usuario {
 
     private String apellido;
 
-    //@JsonIgnore
+    @JsonIgnore
     private String password;
 
     public Usuario() {
     }
 
-    public Usuario(long id, Direccion direccion, String usuario, String nombre, String apellido, String password) {
+    public Usuario(long id, String usuario, String nombre, String apellido, String password) {
         this.id = id;
-        this.direccion = direccion;
         this.usuario = usuario;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -78,25 +71,5 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", direccion=" + direccion +
-                ", usuario='" + usuario + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }
