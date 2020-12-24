@@ -46,10 +46,8 @@ public class DireccionDaoImpl implements IDireccionDao {
 
     @Transactional
     @Override
-    public String eliminar(long id) {
+    public void eliminar(long id) {
         Direccion dir = getDireccionById(id);
         entityManager.remove(dir);
-        String eliminado = "Dirección Eliminada";
-        return eliminado;
     }
 }

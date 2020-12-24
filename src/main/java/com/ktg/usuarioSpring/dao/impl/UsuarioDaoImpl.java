@@ -46,10 +46,8 @@ public class UsuarioDaoImpl implements IUsuarioDao {
 
     @Transactional
     @Override
-    public String eliminar(long id){
+    public void eliminar(long id){
         Usuario usuario = getUsuarioById(id);
         entityManager.remove(usuario);
-        String eliminado = "Usuario Eliminado";
-        return eliminado;
     }
 }

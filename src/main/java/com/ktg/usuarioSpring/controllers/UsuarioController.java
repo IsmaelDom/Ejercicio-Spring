@@ -40,15 +40,12 @@ public class UsuarioController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     Usuario editar(@RequestBody Usuario user){
-
         return usuarioService.editar(user);
     }
 
     //Método para eliminar un usuario
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    String eliminar(@PathVariable long id){
+    void eliminar(@PathVariable long id){
         usuarioService.eliminar(id);
-        String eliminado = "Usuario Eliminado Correctamente";
-        return eliminado;
     }
 }

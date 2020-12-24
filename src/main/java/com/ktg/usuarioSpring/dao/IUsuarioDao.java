@@ -10,6 +10,6 @@ public interface IUsuarioDao {
     Usuario getUsuarioById(long id);
     Usuario registrar(Usuario user);
     Usuario editar(Usuario user);
-    String eliminar(long id);
+    void eliminar(long id);
 
 }

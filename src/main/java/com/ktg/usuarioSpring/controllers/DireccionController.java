@@ -36,9 +36,7 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    String eliminar(@PathVariable long id){
+    void eliminar(@PathVariable long id){
         direccionService.eliminar(id);
-        String eliminado = "Dirección Eliminada Correctamente";
-        return eliminado;
     }
 }

@@ -29,9 +29,7 @@ public class UsuarioService {
         return usuarioDao.editar(user);
     }
 
-    public String eliminar(long id){
+    public void eliminar(long id){
         usuarioDao.eliminar(id);
-        String eliminado = "Usuario Eliminado Correctamente";
-        return eliminado;
     }
 }

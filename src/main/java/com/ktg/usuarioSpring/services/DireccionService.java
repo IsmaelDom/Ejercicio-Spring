@@ -29,9 +29,7 @@ public class DireccionService {
         return direccionDao.editar(direccion);
     }
 
-    public String eliminar(long id){
+    public void eliminar(long id){
         direccionDao.eliminar(id);
-        String eliminado = "Direccion Eliminada Correctamente";
-        return eliminado;
     }
 }

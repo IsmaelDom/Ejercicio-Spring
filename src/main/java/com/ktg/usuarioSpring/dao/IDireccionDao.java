@@ -10,5 +10,5 @@ public interface IDireccionDao {
     Direccion getDireccionById(long id);
     Direccion registrar(Direccion direccion);
     Direccion editar(Direccion direccion);
-    String eliminar(long id);
+    void eliminar(long id);
 }
