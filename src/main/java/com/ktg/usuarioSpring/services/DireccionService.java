@@ -22,16 +22,19 @@ public class DireccionService {
     }
 
     public UserVO getFullDireccion(long id){
-        UserVO dto;
+        UserVO dto = null;
 
         Direccion dir = direccionDao.getDireccionById(id);
         Usuario user = dir.getUsuario();
-        //Usuario user = usuarioDao.getUsuarioById(id);
 
         dto = new UserVO();
         dto.setUsuario("Nombre: " + user.getNombre() + " " + user.getApellido());
-        dto.setDireccion("Dirección: " + dir.getCalle() + " " + dir.getNo_exterior() + " " + dir.getCp()
-                        + " Estado: " + dir.getEstado() + " Referencia: " + dir.getReferencia());
+        //dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp()
+        //                 ". Estado: " + dir.getEstado() + ". Referencia: " + dir.getReferencia());
+        dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp());
+        dto.setEstado(dir.getEstado());
+        dto.setReferencia(dir.getReferencia());
+
         return dto;
     }
 
