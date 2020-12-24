@@ -39,18 +39,9 @@ public class UsuarioController {
     //Método para editar un usuario
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    Usuario editar(@RequestBody Usuario user, @PathVariable long id){
-        Usuario usuarioActual = usuarioService.getUsuarioById(id);
+    Usuario editar(@RequestBody Usuario user){
 
-        usuarioActual.setUsuario(user.getUsuario());
-        usuarioActual.setApellido(user.getApellido());
-        usuarioActual.setDireccion(user.getDireccion());
-        usuarioActual.setNombre(user.getNombre());
-        usuarioActual.setPassword(user.getPassword());
-
-        System.out.println("Valores para editar: " + usuarioActual);
-        System.out.println("Valores actuales: " + user);
-        return usuarioService.editar(usuarioActual);
+        return usuarioService.editar(user);
     }
 
     //Método para eliminar un usuario
