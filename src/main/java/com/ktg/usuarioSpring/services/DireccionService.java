@@ -1,7 +1,6 @@
 package com.ktg.usuarioSpring.services;
 
 import com.ktg.usuarioSpring.dao.IDireccionDao;
-import com.ktg.usuarioSpring.dao.IUsuarioDao;
 import com.ktg.usuarioSpring.model.UserVO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
@@ -15,25 +14,21 @@ public class DireccionService {
 
     @Autowired
     IDireccionDao direccionDao;
-    IUsuarioDao usuarioDao;
 
     public List<Direccion> getDireccion(){
         return direccionDao.getDireccion();
     }
 
     public UserVO getFullDireccion(long id){
-        UserVO dto = null;
+        UserVO dto;
 
         Direccion dir = direccionDao.getDireccionById(id);
         Usuario user = dir.getUsuario();
 
         dto = new UserVO();
         dto.setUsuario("Nombre: " + user.getNombre() + " " + user.getApellido());
-        //dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp()
-        //                 ". Estado: " + dir.getEstado() + ". Referencia: " + dir.getReferencia());
-        dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp());
-        dto.setEstado(dir.getEstado());
-        dto.setReferencia(dir.getReferencia());
+        dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp()
+                         + ". Estado: " + dir.getEstado() + ". Referencia: " + dir.getReferencia());
 
         return dto;
     }

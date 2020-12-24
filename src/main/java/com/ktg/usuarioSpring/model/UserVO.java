@@ -6,8 +6,6 @@ public class UserVO implements Serializable {
 
     private String direccion;
     private String usuario;
-    private String estado;
-    private String referencia;
 
     public String getDireccion() {
         return direccion;
@@ -23,21 +21,5 @@ public class UserVO implements Serializable {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
     }
 }
