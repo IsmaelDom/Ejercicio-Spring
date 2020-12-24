@@ -13,13 +13,17 @@ public class Usuario {
     @Column(name = "id_usuario", updatable = false, nullable = false)
     private long id;
 
+    @Column(nullable = false, unique = true, length = 100)
     private String usuario;
 
+    @Column(nullable = false, length = 100)
     private String nombre;
 
+    @Column(nullable = false, length = 100)
     private String apellido;
 
-    @JsonIgnore
+    //@JsonIgnore
+    @Column(nullable = false)
     private String password;
 
     public Usuario() {

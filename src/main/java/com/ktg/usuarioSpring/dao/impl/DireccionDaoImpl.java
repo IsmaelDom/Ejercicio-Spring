@@ -2,7 +2,6 @@ package com.ktg.usuarioSpring.dao.impl;
 
 import com.ktg.usuarioSpring.dao.IDireccionDao;
 import com.ktg.usuarioSpring.model.entity.Direccion;
-import com.ktg.usuarioSpring.model.entity.Usuario;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

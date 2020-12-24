@@ -14,17 +14,23 @@ public class Direccion {
     private long id;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @Column(nullable = false, length = 100)
     private String calle;
+
+    @Column(nullable = false, length = 15)
     private String no_exterior;
 
-    @Column(name = "codigo_postal")
+    @Column(name = "codigo_postal", length = 10, nullable = false)
     private String cp;
 
+    @Column(nullable = false, length = 100)
     private String estado;
+
+    @Column(nullable = false)
     private String referencia;
 
     public Direccion() {
