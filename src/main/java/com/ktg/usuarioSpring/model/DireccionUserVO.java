@@ -2,7 +2,7 @@ package com.ktg.usuarioSpring.model;
 
 import java.io.Serializable;
 
-public class UserVO implements Serializable {
+public class DireccionUserVO implements Serializable {
 
     private String direccion;
     private String usuario;

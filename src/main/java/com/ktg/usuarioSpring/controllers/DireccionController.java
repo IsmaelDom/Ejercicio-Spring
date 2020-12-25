@@ -1,6 +1,6 @@
 package com.ktg.usuarioSpring.controllers;
 
-import com.ktg.usuarioSpring.model.UserVO;
+import com.ktg.usuarioSpring.model.DireccionUserVO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.services.DireccionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,12 @@ public class DireccionController {
         return direccionService.getDireccion();
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    List<DireccionUserVO> getAll(){
+        return direccionService.getAll();
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     Direccion getDireccionById(@PathVariable long id){
@@ -31,7 +37,7 @@ public class DireccionController {
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    UserVO getFullDireccionById(@PathVariable long id){
+    DireccionUserVO getFullDireccionById(@PathVariable long id){
         return direccionService.getFullDireccion(id);
     }
 

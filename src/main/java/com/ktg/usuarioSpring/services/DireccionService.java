@@ -1,7 +1,7 @@
 package com.ktg.usuarioSpring.services;
 
 import com.ktg.usuarioSpring.dao.IDireccionDao;
-import com.ktg.usuarioSpring.model.UserVO;
+import com.ktg.usuarioSpring.model.DireccionUserVO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +19,23 @@ public class DireccionService {
         return direccionDao.getDireccion();
     }
 
-    public UserVO getFullDireccion(long id){
-        UserVO dto;
+    public List<DireccionUserVO> getAll(){
+        return direccionDao.getAll();
+    }
+
+    public DireccionUserVO getFullDireccion(long id){
+        DireccionUserVO dto;
 
         Direccion dir = direccionDao.getDireccionById(id);
         Usuario user = dir.getUsuario();
 
-        dto = new UserVO();
+        dto = new DireccionUserVO();
         dto.setUsuario("Nombre: " + user.getNombre() + " " + user.getApellido());
         dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp()
                          + ". Estado: " + dir.getEstado() + ". Referencia: " + dir.getReferencia());
 
         return dto;
     }
-
 
     public Direccion getDireccionById(long id){
         return direccionDao.getDireccionById(id);
