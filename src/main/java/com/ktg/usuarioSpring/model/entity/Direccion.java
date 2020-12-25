@@ -1,6 +1,6 @@
 package com.ktg.usuarioSpring.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -13,8 +13,9 @@ public class Direccion {
     @Column(name = "id_direccion", updatable = false, nullable = false)
     private long id;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
