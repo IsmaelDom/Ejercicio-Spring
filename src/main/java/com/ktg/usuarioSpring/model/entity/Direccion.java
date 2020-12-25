@@ -1,7 +1,5 @@
 package com.ktg.usuarioSpring.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 
 @Entity
@@ -25,7 +23,7 @@ public class Direccion {
     @Column(nullable = false, length = 15)
     private String no_exterior;
 
-    @Column(name = "codigo_postal", length = 10, nullable = false)
+    @Column(name = "codigo_postal", nullable = false, length = 10)
     private String cp;
 
     @Column(nullable = false, length = 100)
