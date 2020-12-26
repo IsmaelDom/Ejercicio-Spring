@@ -36,12 +36,7 @@ public class DireccionController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     Direccion getDireccionById(@PathVariable long id){
-        Optional<Direccion> optionalDireccion = Optional.ofNullable(direccionService.getDireccionById(id));
-        if (optionalDireccion.isPresent()){
-            return optionalDireccion.get();
-        } else {
-            return null;
-        }
+        return direccionService.getDireccionById(id);
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
