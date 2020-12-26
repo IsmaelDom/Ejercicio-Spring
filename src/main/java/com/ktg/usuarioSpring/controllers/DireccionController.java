@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
+//Anotación que indica que es un servicio REST
 @RestController
+//URL
 @RequestMapping("direccion")
 
 public class DireccionController {
@@ -18,7 +21,8 @@ public class DireccionController {
     DireccionService direccionService;
 
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping //Tambien se puede usar pero toma la url del RequestMapping
+    //@RequestMapping(value = "/", method = RequestMethod.GET)
     List<Direccion> getDirecciones(){
         return direccionService.getDireccion();
     }
@@ -32,7 +36,12 @@ public class DireccionController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     Direccion getDireccionById(@PathVariable long id){
-        return direccionService.getDireccionById(id);
+        Optional<Direccion> optionalDireccion = Optional.ofNullable(direccionService.getDireccionById(id));
+        if (optionalDireccion.isPresent()){
+            return optionalDireccion.get();
+        } else {
+            return null;
+        }
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
