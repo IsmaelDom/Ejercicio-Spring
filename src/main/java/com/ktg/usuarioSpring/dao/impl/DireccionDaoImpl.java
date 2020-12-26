@@ -19,13 +19,6 @@ public class DireccionDaoImpl implements IDireccionDao {
 
     @Transactional
     @Override
-    public List<Direccion> getDireccion() {
-        String hql = "FROM Direccion as d";
-        return (List<Direccion>) entityManager.createQuery(hql).getResultList();
-    }
-
-    @Transactional
-    @Override
     public List<DireccionUserVO> getAll() {
         String hql = "FROM Direccion as d";
         return (List<DireccionUserVO>) entityManager.createQuery(hql).getResultList();

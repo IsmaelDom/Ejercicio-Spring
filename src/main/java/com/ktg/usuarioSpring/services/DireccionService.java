@@ -15,10 +15,6 @@ public class DireccionService {
     @Autowired
     IDireccionDao direccionDao;
 
-    public List<Direccion> getDireccion(){
-        return direccionDao.getDireccion();
-    }
-
     public List<DireccionUserVO> getAll(){
         return direccionDao.getAll();
     }

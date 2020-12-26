@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 //Anotación que indica que es un servicio REST
 @RestController
@@ -23,12 +22,6 @@ public class DireccionController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping //Tambien se puede usar pero toma la url del RequestMapping
     //@RequestMapping(value = "/", method = RequestMethod.GET)
-    List<Direccion> getDirecciones(){
-        return direccionService.getDireccion();
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
     List<DireccionUserVO> getAll(){
         return direccionService.getAll();
     }
