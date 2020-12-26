@@ -2,6 +2,7 @@ package com.ktg.usuarioSpring.model.entity;
 
 import javax.persistence.*;
 
+//Indica que es una entidad
 @Entity
 @Table(name = "direcciones")
 public class Direccion {
@@ -23,7 +24,7 @@ public class Direccion {
     @Column(nullable = false, length = 15)
     private String no_exterior;
 
-    @Column(name = "codigo_postal", nullable = false, length = 10)
+    @Column(name = "codigo_postal", nullable = false, length = 15)
     private String cp;
 
     @Column(nullable = false, length = 100)
