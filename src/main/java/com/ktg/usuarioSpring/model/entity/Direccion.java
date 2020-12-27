@@ -1,6 +1,8 @@
 package com.ktg.usuarioSpring.model.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 //Indica que es una entidad
 @Entity
@@ -18,6 +20,8 @@ public class Direccion {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @NotNull
+    @Size(min = 4, message = "Ingrese una calle valida")
     @Column(nullable = false, length = 100)
     private String calle;
 
