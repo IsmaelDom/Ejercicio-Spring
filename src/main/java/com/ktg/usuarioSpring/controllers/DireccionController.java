@@ -4,7 +4,9 @@ import com.ktg.usuarioSpring.model.DireccionUserVO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.services.DireccionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +20,13 @@ public class DireccionController {
 
     @Autowired
     DireccionService direccionService;
+
+    @InitBinder
+    public void binder(WebDataBinder bind){
+        System.out.println("Entro a el metodo binder");
+        StringTrimmerEditor espacios = new StringTrimmerEditor(true);
+        bind.registerCustomEditor(String.class, espacios);
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping //Tambien se puede usar pero toma la url del RequestMapping
