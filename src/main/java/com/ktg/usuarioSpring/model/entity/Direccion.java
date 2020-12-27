@@ -1,7 +1,8 @@
 package com.ktg.usuarioSpring.model.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 //Indica que es una entidad
@@ -20,20 +21,24 @@ public class Direccion {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @NotNull
+    @NotEmpty
     @Size(min = 4, message = "Ingrese una calle valida")
     @Column(nullable = false, length = 100)
     private String calle;
 
+    @NotBlank(message = "Ingrese No. exterior correcto")
     @Column(nullable = false, length = 15)
     private String no_exterior;
 
+    @NotBlank(message = "Ingrese Codigo Postal valido")
     @Column(name = "codigo_postal", nullable = false, length = 15)
     private String cp;
 
+    @NotBlank(message = "Ingrese Estado valido")
     @Column(nullable = false, length = 100)
     private String estado;
 
+    @NotBlank(message = "Ingrese Referencia valida")
     @Column(nullable = false)
     private String referencia;
 
