@@ -1,6 +1,7 @@
 package com.ktg.usuarioSpring.model.entity;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 //Indica que es una entidad
@@ -13,6 +14,7 @@ public class Direccion {
     @Column(name = "id_direccion", updatable = false, nullable = false)
     private long id;
 
+    @Valid
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
