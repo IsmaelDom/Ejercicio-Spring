@@ -19,27 +19,27 @@ public class Direccion {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @NotBlank(message = "Campo Calle es requerido")
+    @NotBlank(message = "La Calle es requerida")
     @Size(min = 4, max = 100, message = "Ingrese una Calle valida")
     @Column(nullable = false, length = 100)
     private String calle;
 
-    @NotBlank(message = "Campo No. Exterior es requerido")
+    @NotBlank(message = "El No. Exterior es requerido")
     @Size(min = 2, max = 15, message = "Ingrese un No. Exterior valido")
     @Column(nullable = false, length = 15)
     private String no_exterior;
 
-    @NotBlank(message = "Campo Código Postal es requerido")
+    @NotBlank(message = "El Código Postal es requerido")
     @Size(min = 2, max = 15, message = "Ingrese un Código Postal valido")
     @Column(name = "codigo_postal", nullable = false, length = 15)
     private String cp;
 
-    @NotBlank(message = "Campo Estado es requerido")
+    @NotBlank(message = "El Estado es requerido")
     @Size(min = 5, max = 100, message = "Ingrese un Estado valido")
     @Column(nullable = false, length = 100)
     private String estado;
 
-    @NotBlank(message = "Campo Referencia es requerido")
+    @NotBlank(message = "La Referencia es requerida")
     @Column(nullable = false)
     private String referencia;
 

@@ -53,6 +53,7 @@ public class DireccionService {
         if(resValida.hasErrors()){
             Logger.getLogger(getClass().getName()).log(Level.SEVERE,"####### Error al Insertar #####");
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, violations.iterator().next().getMessage());
+
             return null;
         }else{
             return direccionDao.registrar(direccion);
