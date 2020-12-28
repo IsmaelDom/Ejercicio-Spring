@@ -1,9 +1,7 @@
 package com.ktg.usuarioSpring.model.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 //Indica que es una entidad
 @Entity
@@ -15,18 +13,16 @@ public class Direccion {
     @Column(name = "id_direccion", updatable = false, nullable = false)
     private long id;
 
-    //@JsonProperty(access = JsonProperty.Access.READ_WRITE)
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 4, message = "Ingrese una calle valida")
     @Column(nullable = false, length = 100)
     private String calle;
 
-    @NotBlank(message = "Ingrese No. exterior correcto")
+    @NotBlank(message = "Ingrese No. exterior")
     @Column(nullable = false, length = 15)
     private String no_exterior;
 

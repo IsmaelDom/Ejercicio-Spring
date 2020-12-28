@@ -2,14 +2,20 @@ package com.ktg.usuarioSpring.controllers;
 
 import com.ktg.usuarioSpring.model.DireccionUserVO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
+import com.ktg.usuarioSpring.model.entity.Usuario;
 import com.ktg.usuarioSpring.services.DireccionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.*;
+
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 //Anotación que indica que es un servicio REST
 @RestController
@@ -18,39 +24,49 @@ import java.util.List;
 
 public class DireccionController {
 
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
+
     @Autowired
     DireccionService direccionService;
 
-    @InitBinder
+    /*@InitBinder
     public void binder(WebDataBinder bind){
         System.out.println("Entro a el metodo binder");
         StringTrimmerEditor espacios = new StringTrimmerEditor(true);
         bind.registerCustomEditor(String.class, espacios);
-    }
+    }*/
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping //Tambien se puede usar pero toma la url del RequestMapping
+    @GetMapping
     //@RequestMapping(value = "/", method = RequestMethod.GET)
     List<DireccionUserVO> getAll(){
         return direccionService.getAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     Direccion getDireccionById(@PathVariable long id){
         return direccionService.getDireccionById(id);
     }
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     DireccionUserVO getFullDireccionById(@PathVariable long id){
         return direccionService.getFullDireccion(id);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    Direccion registrar(@RequestBody Direccion direccion){
-        return direccionService.registrar(direccion);
+    Direccion registrar(@Valid @RequestBody Direccion direccion, BindingResult resValida){
+        Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
+        if(resValida.hasErrors()){
+            for (ConstraintViolation<Direccion> violation : violations) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, violation.getMessage());
+            }
+            return null;
+        }else{
+            return direccionService.registrar(direccion);
+        }
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
