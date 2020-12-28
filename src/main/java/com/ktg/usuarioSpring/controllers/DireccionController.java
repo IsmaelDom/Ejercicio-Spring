@@ -55,8 +55,8 @@ public class DireccionController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    Direccion editar(@RequestBody Direccion direccion){
-        return direccionService.editar(direccion);
+    Direccion editar(@Valid @RequestBody Direccion direccion, BindingResult resValida){
+        return direccionService.editar(direccion, resValida);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

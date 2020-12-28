@@ -50,9 +50,15 @@ public class DireccionService {
 
     public Direccion registrar(Direccion direccion, BindingResult resValida){
         Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
+        Set<ConstraintViolation<Usuario>> violationUsers = validator.validate(direccion.getUsuario());
         if(resValida.hasErrors()){
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"####### Error al Insertar #####");
             for (ConstraintViolation<Direccion> violation : violations) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, violation.getMessage());
+            }
+
+            for (ConstraintViolation<Usuario> violationUser : violationUsers) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, violationUser.getMessage());
             }
             return null;
         }else{
@@ -60,8 +66,17 @@ public class DireccionService {
         }
     }
 
-    public Direccion editar(Direccion direccion){
-        return direccionDao.editar(direccion);
+    public Direccion editar(Direccion direccion, BindingResult resValida){
+        Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
+        if(resValida.hasErrors()){
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"####### Error al Editar #####");
+            for (ConstraintViolation<Direccion> violation : violations) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, violation.getMessage());
+            }
+            return null;
+        }else{
+            return direccionDao.editar(direccion);
+        }
     }
 
     public void eliminar(long id){
