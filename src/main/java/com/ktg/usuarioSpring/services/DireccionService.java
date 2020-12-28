@@ -6,14 +6,25 @@ import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class DireccionService {
 
     @Autowired
     IDireccionDao direccionDao;
+
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
 
     public List<DireccionUserVO> getAll(){
         return direccionDao.getAll();
@@ -37,8 +48,16 @@ public class DireccionService {
         return direccionDao.getDireccionById(id);
     }
 
-    public Direccion registrar(Direccion direccion){
-        return direccionDao.registrar(direccion);
+    public Direccion registrar(Direccion direccion, BindingResult resValida){
+        Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
+        if(resValida.hasErrors()){
+            for (ConstraintViolation<Direccion> violation : violations) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, violation.getMessage());
+            }
+            return null;
+        }else{
+            return direccionDao.registrar(direccion);
+        }
     }
 
     public Direccion editar(Direccion direccion){
