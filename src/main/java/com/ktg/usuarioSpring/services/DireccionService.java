@@ -1,7 +1,7 @@
 package com.ktg.usuarioSpring.services;
 
 import com.ktg.usuarioSpring.dao.IDireccionDao;
-import com.ktg.usuarioSpring.model.DireccionUserVO;
+import com.ktg.usuarioSpring.controllers.DireccionUserDTO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import lombok.extern.java.Log;
@@ -27,22 +27,28 @@ public class DireccionService {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
 
-    public List<DireccionUserVO> getAll(){
+    public List<DireccionUserDTO> getAll(){
         return direccionDao.getAll();
     }
 
-    public DireccionUserVO getFullDireccion(long id){
-        DireccionUserVO dto;
+    public DireccionUserDTO getFullDireccion(long id){
+        DireccionUserDTO dto;
 
         Direccion dir = direccionDao.getDireccionById(id);
-        Usuario user = dir.getUsuario();
+        if (dir == null){
+            log.log(Level.SEVERE, "Error no existe usuario con id: " + id);
+            return null;
+        }else{
+            Usuario user = dir.getUsuario();
 
-        dto = new DireccionUserVO();
-        dto.setUsuario("Nombre: " + user.getNombre() + " " + user.getApellido());
-        dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp()
-                         + ". Estado: " + dir.getEstado() + ". Referencia: " + dir.getReferencia());
-
-        return dto;
+            dto = new DireccionUserDTO();
+            dto.setUsuario("Nombre Completo: " + user.getNombre() + " " + user.getApellido() +
+                    ". Usuario: " + user.getUsuario());
+            dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp()
+                    + ". Estado: " + dir.getEstado() + ". Referencia: " + dir.getReferencia());
+            log.log(Level.INFO, dto.toString());
+            return dto;
+        }
     }
 
     public Direccion getDireccionById(long id){
