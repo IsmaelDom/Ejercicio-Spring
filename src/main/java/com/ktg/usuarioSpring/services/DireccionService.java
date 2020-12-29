@@ -4,6 +4,7 @@ import com.ktg.usuarioSpring.dao.IDireccionDao;
 import com.ktg.usuarioSpring.model.DireccionUserVO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -15,9 +16,9 @@ import javax.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Service
+@Log
 public class DireccionService {
 
     @Autowired
@@ -51,8 +52,8 @@ public class DireccionService {
     public Direccion registrar(Direccion direccion, BindingResult resValida){
         Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
         if(resValida.hasErrors()){
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"####### Error al Insertar #####");
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, violations.iterator().next().getMessage());
+            log.log(Level.SEVERE, "####### Error al Insertar #####");
+            log.log(Level.SEVERE, violations.iterator().next().getMessage());
 
             return null;
         }else{
@@ -63,8 +64,8 @@ public class DireccionService {
     public Direccion editar(Direccion direccion, BindingResult resValida){
         Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
         if(resValida.hasErrors()){
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"####### Error al Editar #####");
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, violations.iterator().next().getMessage());
+            log.log(Level.SEVERE, "####### Error al Editar #####");
+            log.log(Level.SEVERE, violations.iterator().next().getMessage());
 
             return null;
         }else{
