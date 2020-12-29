@@ -57,6 +57,7 @@ public class DireccionService {
 
             return null;
         }else{
+            log.log(Level.INFO, "####### Usuario Insertado Correctamente");
             return direccionDao.registrar(direccion);
         }
     }
@@ -69,6 +70,7 @@ public class DireccionService {
 
             return null;
         }else{
+            log.log(Level.INFO, "####### Usuario Editado Correctamente");
             return direccionDao.editar(direccion);
         }
     }
