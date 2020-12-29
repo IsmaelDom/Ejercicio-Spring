@@ -1,7 +1,7 @@
 package com.ktg.usuarioSpring.dao.impl;
 
 import com.ktg.usuarioSpring.dao.IDireccionDao;
-import com.ktg.usuarioSpring.model.DireccionUserVO;
+import com.ktg.usuarioSpring.controllers.DireccionUserDTO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +19,9 @@ public class DireccionDaoImpl implements IDireccionDao {
 
     @Transactional
     @Override
-    public List<DireccionUserVO> getAll() {
+    public List<DireccionUserDTO> getAll() {
         String hql = "FROM Direccion as d";
-        return (List<DireccionUserVO>) entityManager.createQuery(hql).getResultList();
+        return (List<DireccionUserDTO>) entityManager.createQuery(hql).getResultList();
     }
 
     @Transactional

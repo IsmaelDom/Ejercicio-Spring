@@ -1,6 +1,5 @@
 package com.ktg.usuarioSpring.controllers;
 
-import com.ktg.usuarioSpring.model.DireccionUserVO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.services.DireccionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.*;
-
 import java.util.List;
 
 //Anotación que indica que es un servicio REST
@@ -32,7 +30,7 @@ public class DireccionController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     //@RequestMapping(value = "/", method = RequestMethod.GET)
-    List<DireccionUserVO> getAll(){
+    List<DireccionUserDTO> getAll(){
         return direccionService.getAll();
     }
 
@@ -43,8 +41,7 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    DireccionUserVO getFullDireccionById(@PathVariable long id){
+    DireccionUserDTO getFullDireccionById(@PathVariable long id){
         return direccionService.getFullDireccion(id);
     }
 

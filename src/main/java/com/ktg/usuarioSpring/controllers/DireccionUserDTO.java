@@ -1,8 +1,11 @@
-package com.ktg.usuarioSpring.model;
+package com.ktg.usuarioSpring.controllers;
+
+import lombok.ToString;
 
 import java.io.Serializable;
 
-public class DireccionUserVO implements Serializable {
+@ToString
+public class DireccionUserDTO implements Serializable {
 
     private String direccion;
     private String usuario;
