@@ -6,6 +6,7 @@ import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -28,6 +29,10 @@ public class DireccionService {
     Validator validator = factory.getValidator();
 
     public List<DireccionUserDTO> getAll(){
+        if (direccionDao.getAll() == null){
+            log.log(Level.INFO, "No hay datos por mostrar.");
+            return null;
+        }
         return direccionDao.getAll();
     }
 
@@ -64,8 +69,17 @@ public class DireccionService {
 
             return null;
         }else{
+            Direccion dir = null;
+            try {
+                dir = direccionDao.registrar(direccion);
+            } catch (DataAccessException ex){
+                log.log(Level.SEVERE, "####### Error al Insertar Usuario: " + ex.getMessage() + ": " +
+                                                ex.getMostSpecificCause().getMessage() + " #######");
+                return null;
+            }
             log.log(Level.INFO, "####### Usuario Insertado Correctamente");
-            return direccionDao.registrar(direccion);
+            log.log(Level.INFO, dir.toString());
+            return dir;
         }
     }
 
@@ -78,8 +92,17 @@ public class DireccionService {
 
             return null;
         }else{
+            Direccion dir = null;
+            try {
+                dir = direccionDao.editar(direccion);
+            } catch (DataAccessException ex){
+                log.log(Level.SEVERE, "####### Error al Editar Usuario: " + ex.getMessage() + ": " +
+                        ex.getMostSpecificCause().getMessage() + " #######");
+                return null;
+            }
             log.log(Level.INFO, "####### Usuario Editado Correctamente");
-            return direccionDao.editar(direccion);
+            log.log(Level.INFO, dir.toString());
+            return dir;
         }
     }
 
