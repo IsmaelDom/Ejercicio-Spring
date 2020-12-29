@@ -4,7 +4,6 @@ import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.services.DireccionService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -24,13 +23,6 @@ public class DireccionController {
 
     @Autowired
     DireccionService direccionService;
-
-    /*@InitBinder
-    public void binder(WebDataBinder bind){
-        System.out.println("Entro a el metodo binder");
-        StringTrimmerEditor espacios = new StringTrimmerEditor(true);
-        bind.registerCustomEditor(String.class, espacios);
-    }*/
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -70,7 +62,6 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
     ResponseEntity<?> eliminar(@PathVariable long id){
         DireccionUserDTO dir = direccionService.getFullDireccion(id);
         Map<String, Object> resp = new HashMap<>();
