@@ -20,29 +20,31 @@ import javax.validation.constraints.Size;
 public class Usuario {
 
     @Id
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario", updatable = false, nullable = false)
     private long id;
 
-    @NotBlank(message = "El Usuario es requerido")
-    @Size(min = 2, max = 100, message = "Ingrese un Usuario valido")
+    @NotBlank(message = "El usuario no puede ser nulo.")
+    @Size(min = 2, max = 100, message = "El usuario debe tener entre {min} y {max}.")
     @Column(nullable = false, unique = true, length = 100)
     private String usuario;
 
-    @NotBlank(message = "El Nombre de usuario es requerido")
-    @Size(min = 2, max = 100, message = "Ingrese un Nombre valido")
+    @NotBlank(message = "El nombre no puede ser nulo.")
+    @Size(min = 2, max = 100, message = "El nombre debe tener entre {min} y {max}.")
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    @NotBlank(message = "El Apellido es requerido")
-    @Size(min = 2, max = 100, message = "Ingrese un Apellido valido")
+    @NotBlank(message = "El apellido no puede ser nulo.")
+    @Size(min = 2, max = 100, message = "El Apellido debe tener entre {min} y {max}.")
     @Column(nullable = false, length = 100)
     private String apellido;
 
     //@JsonIgnore
-    @NotBlank(message = "La Contraseña es requerida")
+    @NotBlank(message = "La contraseña no puede ser nula.")
     //Propiedad para que la contraseña solo se pueda escribir
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Size(min = 5, message = "La contraseña debe tener minimo {min} caracteres.")
     @Column(nullable = false)
     private String password;
 

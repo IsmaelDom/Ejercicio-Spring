@@ -1,9 +1,6 @@
 package com.ktg.usuarioSpring.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -16,6 +13,7 @@ import javax.validation.constraints.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Direccion {
 
     @Id
@@ -28,27 +26,27 @@ public class Direccion {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @NotBlank(message = "La Calle es requerida")
-    @Size(min = 4, max = 100, message = "Ingrese una Calle valida, debe tener {min} minimo")
-    @Column(nullable = false, length = 100)
+    @NotBlank(message = "La calle no puede ser nula.")
+    @Size(min = 4, max = 200, message = "La calle debe tener entre {min} y {max}.")
+    @Column(nullable = false, length = 200)
     private String calle;
 
-    @NotBlank(message = "El No. Exterior es requerido")
-    @Size(min = 2, max = 15, message = "Ingrese un No. Exterior valido, debe tener {min} minimo")
+    @NotBlank(message = "El No. exterior no puede ser nulo.")
+    @Size(min = 2, max = 15, message = "El No. exterior debe tener entre {min} y {max}.")
     @Column(nullable = false, length = 15)
     private String no_exterior;
 
-    @NotBlank(message = "El Código Postal es requerido")
-    @Size(min = 2, max = 15, message = "Ingrese un Código Postal valido, debe tener {min} caracteres minimo")
+    @NotBlank(message = "El código postal no puede ser nulo.")
+    @Size(min = 2, max = 15, message = "El código postal debe tener longitud minima de {min}.")
     @Column(name = "codigo_postal", nullable = false, length = 15)
     private String cp;
 
-    @NotBlank(message = "El Estado es requerido")
-    @Size(min = 5, max = 100, message = "Ingrese un Estado valido, debe tener {min} caracteres minimo")
-    @Column(nullable = false, length = 100)
+    @NotBlank(message = "El Estado no puede ser nulo.")
+    @Size(min = 5, message = "El estado debe tener minimo {min} caracteres.")
+    @Column(nullable = false)
     private String estado;
 
-    @NotBlank(message = "La Referencia es requerida")
+    @NotBlank(message = "La Referencia no pueder se nula.")
     @Column(nullable = false)
     private String referencia;
 }
