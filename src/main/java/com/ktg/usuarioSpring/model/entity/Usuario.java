@@ -2,7 +2,9 @@ package com.ktg.usuarioSpring.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,6 +15,8 @@ import javax.validation.constraints.Size;
 @Table(name = "usuarios")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Usuario {
 
     @Id
@@ -36,20 +40,10 @@ public class Usuario {
     private String apellido;
 
     //@JsonIgnore
-    @NotBlank(message = "La Contraseña es requerido")
+    @NotBlank(message = "La Contraseña es requerida")
     //Propiedad para que la contraseña solo se pueda escribir
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
-    public Usuario() {
-    }
-
-    public Usuario(long id, String usuario, String nombre, String apellido, String password) {
-        this.id = id;
-        this.usuario = usuario;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.password = password;
-    }
 }
