@@ -59,7 +59,8 @@ public class DireccionService {
         Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
         if(resValida.hasErrors()){
             log.log(Level.SEVERE, "####### Error al Insertar #####");
-            log.log(Level.SEVERE, violations.iterator().next().getMessage());
+            log.log(Level.SEVERE, violations.iterator().next().getMessage() +
+                    ", Valor: " + violations.iterator().next().getInvalidValue());
 
             return null;
         }else{
@@ -72,7 +73,8 @@ public class DireccionService {
         Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
         if(resValida.hasErrors()){
             log.log(Level.SEVERE, "####### Error al Editar #####");
-            log.log(Level.SEVERE, violations.iterator().next().getMessage());
+            log.log(Level.SEVERE, violations.iterator().next().getMessage() +
+                    ", Valor: "+violations.iterator().next().getInvalidValue());
 
             return null;
         }else{
