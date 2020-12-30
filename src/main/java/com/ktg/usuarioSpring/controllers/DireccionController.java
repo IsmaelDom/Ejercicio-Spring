@@ -16,7 +16,7 @@ import java.util.Map;
 
 //Anotación que indica que es un servicio REST
 @RestController
-//URL
+//Direccion url por la que se va a consultar
 @RequestMapping("direccion")
 @Log
 public class DireccionController {
@@ -24,7 +24,6 @@ public class DireccionController {
     @Autowired
     DireccionService direccionService;
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     //@RequestMapping(value = "/", method = RequestMethod.GET)
     List<DireccionUserDTO> getAll(){
@@ -32,7 +31,6 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
     Direccion getDireccionById(@PathVariable long id){
         return direccionService.getDireccionById(id);
     }
@@ -51,11 +49,11 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     Direccion registrar(@Valid @RequestBody Direccion direccion, BindingResult resValida){
         return direccionService.registrar(direccion, resValida);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     Direccion editar(@Valid @RequestBody Direccion direccion, BindingResult resValida){
         return direccionService.editar(direccion, resValida);
