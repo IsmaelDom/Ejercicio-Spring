@@ -2,7 +2,6 @@ package com.ktg.usuarioSpring.controllers;
 
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.services.DireccionService;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,6 @@ import java.util.Map;
 @RestController
 //Direccion url por la que se va a consultar
 @RequestMapping("direcciones")
-@Log
 public class DireccionController {
 
     //Genera la inyección de dependencia de un Objeto
