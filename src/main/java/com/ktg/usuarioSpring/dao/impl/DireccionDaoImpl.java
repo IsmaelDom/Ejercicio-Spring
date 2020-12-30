@@ -10,41 +10,38 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+//Los métodos se van a ejecutar en una transacción
 @Transactional
+//Se utiliza para clases que acceden directamente a la base de datos
 @Repository
 public class DireccionDaoImpl implements IDireccionDao {
 
     @PersistenceContext
     EntityManager entityManager;
 
-    @Transactional
     @Override
     public List<DireccionUserDTO> getAll() {
         String hql = "FROM Direccion as d";
         return (List<DireccionUserDTO>) entityManager.createQuery(hql).getResultList();
     }
 
-    @Transactional
     @Override
     public Direccion getDireccionById(long id) {
         return entityManager.find(Direccion.class, id);
     }
 
-    @Transactional
     @Override
     public Direccion registrar(Direccion direccion) {
         entityManager.merge(direccion);
         return direccion;
     }
 
-    @Transactional
     @Override
     public Direccion editar(Direccion direccion) {
         entityManager.merge(direccion);
         return direccion;
     }
 
-    @Transactional
     @Override
     public void eliminar(long id) {
         Direccion dir = getDireccionById(id);

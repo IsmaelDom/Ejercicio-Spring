@@ -9,41 +9,38 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+//Los métodos se van a ejecutar en una transacción
 @Transactional
+//Se utiliza para clases que acceden directamente a la base de datos
 @Repository
 public class UsuarioDaoImpl implements IUsuarioDao {
 
     @PersistenceContext
     EntityManager entityManager;
 
-    @Transactional
     @Override
     public List<Usuario> getUsuarios(){
         String hql = "FROM Usuario as u";
         return (List<Usuario>) entityManager.createQuery(hql).getResultList();
     }
 
-    @Transactional
     @Override
     public Usuario getUsuarioById(long id){
         return entityManager.find(Usuario.class, id);
     }
 
-    @Transactional
     @Override
     public Usuario registrar(Usuario user){
         entityManager.merge(user);
         return user;
     }
 
-    @Transactional
     @Override
     public Usuario editar(Usuario user){
         entityManager.merge(user);
         return user;
     }
 
-    @Transactional
     @Override
     public void eliminar(long id){
         Usuario usuario = getUsuarioById(id);
