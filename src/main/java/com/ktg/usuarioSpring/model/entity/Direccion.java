@@ -23,7 +23,7 @@ public class Direccion {
 
     @Valid
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
     @NotBlank(message = "La calle no puede ser nula.")
