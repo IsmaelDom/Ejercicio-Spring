@@ -16,7 +16,7 @@ import java.util.Map;
 //Indica que es un servicio REST
 @RestController
 //Direccion url por la que se va a consultar
-@RequestMapping("user")
+@RequestMapping("users")
 public class UsuarioController {
 
     @Autowired
