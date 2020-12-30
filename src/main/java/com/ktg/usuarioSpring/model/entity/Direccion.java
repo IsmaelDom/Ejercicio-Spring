@@ -21,8 +21,9 @@ public class Direccion {
     @Column(name = "id_direccion", updatable = false, nullable = false)
     private long id;
 
+    //Validación en cascada
     @Valid
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", nullable = false, unique = true)
     private Usuario usuario;
 
