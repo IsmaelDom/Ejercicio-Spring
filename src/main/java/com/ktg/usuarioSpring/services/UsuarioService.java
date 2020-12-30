@@ -1,7 +1,6 @@
 package com.ktg.usuarioSpring.services;
 
 import com.ktg.usuarioSpring.dao.IUsuarioDao;
-import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
