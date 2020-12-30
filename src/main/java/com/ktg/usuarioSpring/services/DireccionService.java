@@ -29,10 +29,6 @@ public class DireccionService {
     Validator validator = factory.getValidator();
 
     public List<DireccionUserDTO> getAll(){
-        if (direccionDao.getAll() == null){
-            log.log(Level.INFO, "No hay datos por mostrar.");
-            return null;
-        }
         return direccionDao.getAll();
     }
 
