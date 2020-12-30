@@ -21,6 +21,7 @@ import java.util.Map;
 @Log
 public class DireccionController {
 
+    //Genera la inyección de dependencia de un Objeto
     @Autowired
     DireccionService direccionService;
 
