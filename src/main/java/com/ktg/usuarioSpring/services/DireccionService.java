@@ -9,24 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 
+//Anotación que indica que es un servicio y tiene logica de negocio
 @Service
 @Log
 public class DireccionService {
 
     @Autowired
     IDireccionDao direccionDao;
-
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
 
     public List<DireccionUserDTO> getAll(){
         return direccionDao.getAll();
@@ -37,7 +32,7 @@ public class DireccionService {
 
         Direccion dir = direccionDao.getDireccionById(id);
         if (dir == null){
-            log.log(Level.SEVERE, "Error no existe usuario con id: " + id);
+            log.log(Level.SEVERE, "Error al obtener usuario con dirección, no existe usuario con id: " + id);
             return null;
         }else{
             Usuario user = dir.getUsuario();
@@ -56,53 +51,65 @@ public class DireccionService {
         return direccionDao.getDireccionById(id);
     }
 
+    //Los posibles errores se almacenan en el parámetro de tipo BindingResult(resValida)
     public Direccion registrar(Direccion direccion, BindingResult resValida){
-        Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
-        if(resValida.hasErrors()){
-            log.log(Level.SEVERE, "####### Error al Insertar #####");
-            log.log(Level.SEVERE, violations.iterator().next().getMessage() +
-                    ", Valor: " + violations.iterator().next().getInvalidValue());
 
+        if(resValida.hasErrors()){//Valida si el objeto trae datos o errores
+            List<String> errores = new ArrayList<>();
+
+            log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
+            log.log(Level.SEVERE, "Errores: ");
+            for (FieldError err : resValida.getFieldErrors()) {
+                log.log(Level.SEVERE, err.getDefaultMessage());
+                errores.add(err.getDefaultMessage());
+            }
             return null;
         }else{
             Direccion dir = null;
             try {
                 dir = direccionDao.registrar(direccion);
             } catch (DataAccessException ex){
-                log.log(Level.SEVERE, "####### Error al Insertar Usuario: " + ex.getMessage() + ": " +
+                log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección: " + ex.getMessage() + ": " +
                                                 ex.getMostSpecificCause().getMessage() + " #######");
                 return null;
             }
-            log.log(Level.INFO, "####### Usuario Insertado Correctamente");
+            log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
             log.log(Level.INFO, dir.toString());
             return dir;
         }
     }
 
     public Direccion editar(Direccion direccion, BindingResult resValida){
-        Set<ConstraintViolation<Direccion>> violations = validator.validate(direccion);
-        if(resValida.hasErrors()){
-            log.log(Level.SEVERE, "####### Error al Editar #####");
-            log.log(Level.SEVERE, violations.iterator().next().getMessage() +
-                    ", Valor: "+violations.iterator().next().getInvalidValue());
 
+        if(resValida.hasErrors()){
+            List<String> errores = new ArrayList<>();
+
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, "Errores: ");
+
+            //FieldError trae los campos con sus errores
+            for (FieldError err : resValida.getFieldErrors()) {
+                log.log(Level.SEVERE, err.getDefaultMessage());
+                errores.add(err.getDefaultMessage());
+            }
             return null;
         }else{
             Direccion dir = null;
             try {
                 dir = direccionDao.editar(direccion);
             } catch (DataAccessException ex){
-                log.log(Level.SEVERE, "####### Error al Editar Usuario: " + ex.getMessage() + ": " +
+                log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección: " + ex.getMessage() + ": " +
                         ex.getMostSpecificCause().getMessage() + " #######");
                 return null;
             }
-            log.log(Level.INFO, "####### Usuario Editado Correctamente");
+            log.log(Level.INFO, "####### Usuario con Dirección Editado Correctamente");
             log.log(Level.INFO, dir.toString());
             return dir;
         }
     }
 
     public void eliminar(long id){
+        log.log(Level.INFO, "####### Usuario con Dirección: " + id + " eliminado.");
         direccionDao.eliminar(id);
     }
 }
