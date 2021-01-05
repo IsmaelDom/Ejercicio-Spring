@@ -37,16 +37,16 @@ public class DireccionController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
      //ResponseEntity maneja respuestas HTTP
     ResponseEntity<?> getFullDireccionById(@PathVariable long id){
-        DireccionUserDTO dir = direccionService.getFullDireccion(id);
-        Map<String, Object> resp = new HashMap<>();
+        DireccionUserDTO direccion = direccionService.getFullDireccion(id);
+        Map<String, Object> response = new HashMap<>();
 
-        if(dir == null){
+        if(direccion == null){
             //Se agrega un elemento a el Map
-            resp.put("mensaje", "El usuario con id: " + id +" no existe en la base de datos.");
-            return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.NOT_FOUND);
+            response.put("mensaje", "El usuario con id: " + id +" no existe en la base de datos.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<DireccionUserDTO>(dir, HttpStatus.OK);
+        return new ResponseEntity<DireccionUserDTO>(direccion, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -64,15 +64,15 @@ public class DireccionController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     //ResponseEntity maneja respuestas HTTP
     ResponseEntity<?> eliminar(@PathVariable long id){
-        DireccionUserDTO dir = direccionService.getFullDireccion(id);
-        Map<String, Object> resp = new HashMap<>();
-        if(dir == null){
+        DireccionUserDTO direccion = direccionService.getFullDireccion(id);
+        Map<String, Object> response = new HashMap<>();
+        if(direccion == null){
             //Se añade un elemento a el Map
-            resp.put("mensaje", "El usuario con id: " + id +" no existe.");
-            return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.NOT_FOUND);
+            response.put("mensaje", "El usuario con id: " + id +" no existe.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
         direccionService.eliminar(id);
-        resp.put("mensaje", "Usuario con id: " + id + " eliminado.");
-        return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.OK);
+        response.put("mensaje", "Usuario con id: " + id + " eliminado.");
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 }

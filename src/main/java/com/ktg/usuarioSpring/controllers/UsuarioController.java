@@ -32,11 +32,11 @@ public class UsuarioController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     ResponseEntity<?> getUsuarioById(@PathVariable long id){
         Usuario user = usuarioService.getUsuarioById(id);
-        Map<String, Object> resp = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
 
         if(user == null){
-            resp.put("mensaje", "El usuario con id: " + id +" no existe.");
-            return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.NOT_FOUND);
+            response.put("mensaje", "El usuario con id: " + id +" no existe.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<Usuario>(user, HttpStatus.OK);
@@ -58,14 +58,14 @@ public class UsuarioController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     ResponseEntity<?> eliminar(@PathVariable long id){
         Usuario user = usuarioService.getUsuarioById(id);
-        Map<String, Object> resp = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
 
         if(user == null){
-            resp.put("mensaje", "El usuario con id: " + id +" no existe.");
-            return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.NOT_FOUND);
+            response.put("mensaje", "El usuario con id: " + id +" no existe.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
         usuarioService.eliminar(id);
-        resp.put("mensaje", "Usuario con id: " + id + " eliminado.");
-        return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.OK);
+        response.put("mensaje", "Usuario con id: " + id + " eliminado.");
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 }
