@@ -52,13 +52,13 @@ public class DireccionController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     //Los posibles errores se almacenarán en el parámetro de tipo BindingResult(resValida)
-    Direccion registrar(@Valid @RequestBody Direccion direccion, BindingResult resValida){
-        return direccionService.registrar(direccion, resValida);
+    Direccion registrar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
+        return direccionService.registrar(direccion, validaRespuesta);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    Direccion editar(@Valid @RequestBody Direccion direccion, BindingResult resValida){
-        return direccionService.editar(direccion, resValida);
+    Direccion editar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
+        return direccionService.editar(direccion, validaRespuesta);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
