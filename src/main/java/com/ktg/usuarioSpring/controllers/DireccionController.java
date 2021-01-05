@@ -54,12 +54,9 @@ public class DireccionController {
     //Los posibles errores se almacenarán en el parámetro de tipo BindingResult(resValida)
     ResponseEntity<?> registrar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
         Map<String, Object> response = new HashMap<>();
-        if (direccion == null || validaRespuesta.hasErrors()){
-            response.put("mensaje", "El usuario no puede estar vacío.");
-            for (FieldError err : validaRespuesta.getFieldErrors()) {
-                response.put("errores", err.getDefaultMessage());
-            }
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        if (validaRespuesta.hasErrors()){
+            response.put("mensaje", "Por favor llene todos los campos.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }else{
             Direccion dir = direccionService.registrar(direccion, validaRespuesta);
             return new ResponseEntity<Direccion>(dir, HttpStatus.CREATED);
@@ -67,8 +64,20 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    Direccion editar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
-        return direccionService.editar(direccion, validaRespuesta);
+    ResponseEntity<?> editar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
+        DireccionUserDTO obtenerDireccion = direccionService.getFullDireccion(direccion.getId());
+        Map<String, Object> response = new HashMap<>();
+        if (obtenerDireccion == null){
+            response.put("mensaje", "El usuario con id " + direccion.getId() + " no se puede editar.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        if (validaRespuesta.hasErrors()){
+            response.put("mensaje", "Por favor llene todos los campos.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        }else{
+            Direccion dir = direccionService.editar(direccion, validaRespuesta);
+            return new ResponseEntity<Direccion>(dir, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
