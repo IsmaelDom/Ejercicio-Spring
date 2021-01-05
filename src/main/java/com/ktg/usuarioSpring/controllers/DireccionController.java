@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.*;
@@ -50,10 +51,19 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     //Los posibles errores se almacenarán en el parámetro de tipo BindingResult(resValida)
-    Direccion registrar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
-        return direccionService.registrar(direccion, validaRespuesta);
+    ResponseEntity<?> registrar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
+        Map<String, Object> response = new HashMap<>();
+        if (direccion == null || validaRespuesta.hasErrors()){
+            response.put("mensaje", "El usuario no puede estar vacío.");
+            for (FieldError err : validaRespuesta.getFieldErrors()) {
+                response.put("errores", err.getDefaultMessage());
+            }
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }else{
+            Direccion dir = direccionService.registrar(direccion, validaRespuesta);
+            return new ResponseEntity<Direccion>(dir, HttpStatus.CREATED);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
