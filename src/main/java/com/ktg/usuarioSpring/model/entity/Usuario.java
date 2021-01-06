@@ -23,10 +23,10 @@ public class Usuario {
     @Column(name = "id_usuario", updatable = false, nullable = false)
     private long id;
 
-    @NotBlank(message = "El usuario no puede ser nulo.")
-    @Size(min = 2, max = 100, message = "El usuario debe tener entre {min} y {max}.")
+    @NotBlank(message = "El correo no puede ser nulo.")
+    @Size(max = 100, message = "El correo debe tener entre máximo {max}.")
     @Column(nullable = false, unique = true, length = 100)
-    private String usuario;
+    private String correo;
 
     @NotBlank(message = "El nombre no puede ser nulo.")
     @Size(min = 2, max = 100, message = "El nombre debe tener entre {min} y {max}.")
@@ -46,4 +46,7 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
+    @NotBlank(message = "La edad no puede ser nula.")
+    @Column(nullable = false, length = 3)
+    private int edad;
 }
