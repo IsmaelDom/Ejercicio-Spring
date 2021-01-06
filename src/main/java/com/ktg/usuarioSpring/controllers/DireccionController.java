@@ -28,8 +28,15 @@ public class DireccionController {
 
     @GetMapping
     //@RequestMapping(value = "/", method = RequestMethod.GET)
-    List<DireccionUserDTO> getAll(){
-        return direccionService.getAll();
+    ResponseEntity<?> getAll(){
+        List<DireccionUserDTO> direcciones = direccionService.getAll();
+        Map<String, Object> response = new HashMap<>();
+        if (direcciones == null){
+            response.put("mensaje", "Aún no hay datos por mostrar.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<List<DireccionUserDTO>>(direcciones, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
