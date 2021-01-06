@@ -18,6 +18,8 @@ import java.util.Map;
 @RestController
 //Direccion url por la que se va a consultar
 @RequestMapping("direcciones")
+//@CrossOrigin(origins = {"http://localhost:8081"})
+@CrossOrigin
 public class DireccionController {
 
     //Genera la inyección de dependencia de un Objeto
