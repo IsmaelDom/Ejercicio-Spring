@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.*;
@@ -17,6 +18,8 @@ import java.util.Map;
 @RestController
 //Direccion url por la que se va a consultar
 @RequestMapping("direcciones")
+//@CrossOrigin(origins = {"http://localhost:8081"})
+@CrossOrigin
 public class DireccionController {
 
     //Genera la inyección de dependencia de un Objeto
@@ -37,42 +40,60 @@ public class DireccionController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
      //ResponseEntity maneja respuestas HTTP
     ResponseEntity<?> getFullDireccionById(@PathVariable long id){
-        DireccionUserDTO dir = direccionService.getFullDireccion(id);
-        Map<String, Object> resp = new HashMap<>();
+        DireccionUserDTO direccion = direccionService.getFullDireccion(id);
+        Map<String, Object> response = new HashMap<>();
 
-        if(dir == null){
+        if(direccion == null){
             //Se agrega un elemento a el Map
-            resp.put("mensaje", "El usuario con id: " + id +" no existe en la base de datos.");
-            return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.NOT_FOUND);
+            response.put("mensaje", "El usuario con id: " + id +" no existe en la base de datos.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<DireccionUserDTO>(dir, HttpStatus.OK);
+        return new ResponseEntity<DireccionUserDTO>(direccion, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     //Los posibles errores se almacenarán en el parámetro de tipo BindingResult(resValida)
-    Direccion registrar(@Valid @RequestBody Direccion direccion, BindingResult resValida){
-        return direccionService.registrar(direccion, resValida);
+    ResponseEntity<?> registrar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
+        Map<String, Object> response = new HashMap<>();
+        if (validaRespuesta.hasErrors()){
+            response.put("mensaje", "Por favor llene todos los campos.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        }else{
+            Direccion dir = direccionService.registrar(direccion, validaRespuesta);
+            return new ResponseEntity<Direccion>(dir, HttpStatus.CREATED);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    Direccion editar(@Valid @RequestBody Direccion direccion, BindingResult resValida){
-        return direccionService.editar(direccion, resValida);
+    ResponseEntity<?> editar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
+        DireccionUserDTO obtenerDireccion = direccionService.getFullDireccion(direccion.getId());
+        Map<String, Object> response = new HashMap<>();
+        if (obtenerDireccion == null){
+            response.put("mensaje", "El usuario con id " + direccion.getId() + " no se puede editar.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        if (validaRespuesta.hasErrors()){
+            response.put("mensaje", "Por favor llene todos los campos.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+        }else{
+            Direccion dir = direccionService.editar(direccion, validaRespuesta);
+            return new ResponseEntity<Direccion>(dir, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     //ResponseEntity maneja respuestas HTTP
     ResponseEntity<?> eliminar(@PathVariable long id){
-        DireccionUserDTO dir = direccionService.getFullDireccion(id);
-        Map<String, Object> resp = new HashMap<>();
-        if(dir == null){
+        DireccionUserDTO direccion = direccionService.getFullDireccion(id);
+        Map<String, Object> response = new HashMap<>();
+        if(direccion == null){
             //Se añade un elemento a el Map
-            resp.put("mensaje", "El usuario con id: " + id +" no existe.");
-            return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.NOT_FOUND);
+            response.put("mensaje", "El usuario con id: " + id +" no existe.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
         direccionService.eliminar(id);
-        resp.put("mensaje", "Usuario con id: " + id + " eliminado.");
-        return new ResponseEntity<Map<String, Object>>(resp, HttpStatus.OK);
+        response.put("mensaje", "Usuario con id: " + id + " eliminado.");
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 }

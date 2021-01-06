@@ -39,7 +39,7 @@ public class DireccionService {
 
             dto = new DireccionUserDTO();
             dto.setUsuario("Nombre Completo: " + user.getNombre() + " " + user.getApellido() +
-                    ". Usuario: " + user.getUsuario());
+                    ". E-mail: " + user.getCorreo() + ". Edad: " + user.getEdad());
             dto.setDireccion("Dirección: " + dir.getCalle() + ", " + dir.getNo_exterior() + ", " + dir.getCp()
                     + ". Estado: " + dir.getEstado() + ". Referencia: " + dir.getReferencia());
             log.log(Level.INFO, dto.toString());
