@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "usuarios")
@@ -30,12 +27,10 @@ public class Usuario {
     private String correo;
 
     @NotBlank(message = "El nombre no puede ser nulo.")
-    @Size(min = 2, max = 100, message = "El nombre debe tener entre {min} y {max}.")
     @Column(nullable = false, length = 100)
     private String nombre;
 
     @NotBlank(message = "El apellido no puede ser nulo.")
-    @Size(min = 2, max = 100, message = "El Apellido debe tener entre {min} y {max}.")
     @Column(nullable = false, length = 100)
     private String apellido;
 
@@ -48,6 +43,8 @@ public class Usuario {
     private String password;
 
     @NotNull(message = "La edad no puede ser nula.")
+    @Min(value = 1, message = "Ingrese una edad valida.")
+    @Max(value = 120, message = "Ingrese una edad valida.")
     @Column(nullable = false, length = 3)
     private int edad;
 }
