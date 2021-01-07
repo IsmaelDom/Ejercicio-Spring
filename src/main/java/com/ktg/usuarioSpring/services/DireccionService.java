@@ -1,5 +1,6 @@
 package com.ktg.usuarioSpring.services;
 
+import com.ktg.usuarioSpring.config.exceptions.ExceptionConfig;
 import com.ktg.usuarioSpring.dao.IDireccionDao;
 import com.ktg.usuarioSpring.controllers.DireccionUserDTO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
@@ -52,17 +53,16 @@ public class DireccionService {
     }
 
     //Los posibles errores se almacenan en el parámetro de tipo BindingResult(resValida)
-    public Direccion registrar(Direccion direccion, BindingResult resValida){
+    public Direccion registrar(Direccion direccion){
 
-        if(resValida.hasErrors()){//Valida si el objeto trae datos o errores
-            List<String> errores = new ArrayList<>();
+        if(direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty() || direccion.getCp().isEmpty()
+                || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty()
+                || direccion.getMunicipio().isEmpty() || direccion.getUsuario().getCorreo().isEmpty()
+                || direccion.getUsuario().getEdad() <= 0 || direccion.getUsuario().getApellido().isEmpty()
+                || direccion.getUsuario().getNombre().isEmpty() || direccion.getUsuario().getPassword().isEmpty()){
 
             log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
-            log.log(Level.SEVERE, "Errores: ");
-            for (FieldError err : resValida.getFieldErrors()) {
-                log.log(Level.SEVERE, err.getDefaultMessage());
-                errores.add(err.getDefaultMessage());
-            }
+            log.log(Level.SEVERE, "Hay valores nulos");
             return null;
         }else{
             Direccion dir = null;
