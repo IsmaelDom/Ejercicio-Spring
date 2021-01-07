@@ -1,11 +1,12 @@
 package com.ktg.usuarioSpring.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -24,7 +25,7 @@ public class Usuario {
     private long id;
 
     @NotBlank(message = "El correo no puede ser nulo.")
-    @Size(max = 100, message = "El correo debe tener entre máximo {max}.")
+    @Email(message = "Ingrese correo valido")
     @Column(nullable = false, unique = true, length = 100)
     private String correo;
 
@@ -46,7 +47,7 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
-    @NotBlank(message = "La edad no puede ser nula.")
+    @NotNull(message = "La edad no puede ser nula.")
     @Column(nullable = false, length = 3)
     private int edad;
 }
