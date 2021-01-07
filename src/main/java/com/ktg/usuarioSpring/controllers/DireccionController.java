@@ -66,20 +66,15 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    ResponseEntity<?> editar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
+    ResponseEntity<?> editar(@Valid @RequestBody Direccion direccion){
         DireccionUserDTO obtenerDireccion = direccionService.getFullDireccion(direccion.getId());
         Map<String, Object> response = new HashMap<>();
         if (obtenerDireccion == null){
-            response.put("mensaje", "El usuario con id " + direccion.getId() + " no se puede editar.");
+            response.put("mensaje", "El usuario con id " + direccion.getId() + " no existe.");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        if (validaRespuesta.hasErrors()){
-            response.put("mensaje", "Por favor llene todos los campos.");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-        }else{
-            Direccion dir = direccionService.editar(direccion, validaRespuesta);
-            return new ResponseEntity<Direccion>(dir, HttpStatus.OK);
-        }
+        Direccion dir = direccionService.editar(direccion);
+        return new ResponseEntity<Direccion>(dir, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
