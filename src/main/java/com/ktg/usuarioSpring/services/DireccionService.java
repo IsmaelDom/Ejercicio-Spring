@@ -1,13 +1,11 @@
 package com.ktg.usuarioSpring.services;
 
-import com.ktg.usuarioSpring.config.exceptions.ExceptionConfig;
 import com.ktg.usuarioSpring.dao.IDireccionDao;
 import com.ktg.usuarioSpring.controllers.DireccionUserDTO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -66,42 +64,40 @@ public class DireccionService {
             return null;
         }else{
             Direccion dir = null;
-            try {
+            //try {
                 dir = direccionDao.registrar(direccion);
-            } catch (DataAccessException ex){
+            /*} catch (DataAccessException ex){
                 log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección: " + ex.getMessage() + ": " +
                                                 ex.getMostSpecificCause().getMessage() + " #######");
                 return null;
-            }
+            }*/
             log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
             log.log(Level.INFO, dir.toString());
             return dir;
         }
     }
 
-    public Direccion editar(Direccion direccion, BindingResult resValida){
+    public Direccion editar(Direccion direccion){
 
-        if(resValida.hasErrors()){
-            List<String> errores = new ArrayList<>();
+        if(direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty() || direccion.getCp().isEmpty()
+                || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty()
+                || direccion.getMunicipio().isEmpty() || direccion.getUsuario().getCorreo().isEmpty()
+                || direccion.getUsuario().getEdad() <= 0 || direccion.getUsuario().getApellido().isEmpty()
+                || direccion.getUsuario().getNombre().isEmpty() || direccion.getUsuario().getPassword().isEmpty()){
 
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
-            log.log(Level.SEVERE, "Errores: ");
+            log.log(Level.SEVERE, "####### Hay campos null");
 
-            //FieldError trae los campos con sus errores
-            for (FieldError err : resValida.getFieldErrors()) {
-                log.log(Level.SEVERE, err.getDefaultMessage());
-                errores.add(err.getDefaultMessage());
-            }
             return null;
         }else{
             Direccion dir = null;
-            try {
+            /*try {*/
                 dir = direccionDao.editar(direccion);
-            } catch (DataAccessException ex){
+            /*} catch (DataAccessException ex){
                 log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección: " + ex.getMessage() + ": " +
                         ex.getMostSpecificCause().getMessage() + " #######");
                 return null;
-            }
+            }*/
             log.log(Level.INFO, "####### Usuario con Dirección Editado Correctamente");
             log.log(Level.INFO, dir.toString());
             return dir;
