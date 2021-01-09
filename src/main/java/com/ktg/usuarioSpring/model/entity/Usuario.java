@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
 public class Usuario {
 
     @Id
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario", updatable = false, nullable = false)
     private long id;
@@ -37,7 +37,7 @@ public class Usuario {
     //@JsonIgnore
     @NotBlank(message = "La contraseña no puede ser nula.")
     //Propiedad para que la contraseña solo se pueda escribir
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Size(min = 5, message = "La contraseña debe tener minimo {min} caracteres.")
     @Column(nullable = false)
     private String password;
