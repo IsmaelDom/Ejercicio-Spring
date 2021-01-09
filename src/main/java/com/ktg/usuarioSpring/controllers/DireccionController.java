@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.*;
@@ -28,8 +27,15 @@ public class DireccionController {
 
     @GetMapping
     //@RequestMapping(value = "/", method = RequestMethod.GET)
-    List<DireccionUserDTO> getAll(){
-        return direccionService.getAll();
+    ResponseEntity<?> getAll(){
+        List<DireccionUserDTO> direcciones = direccionService.getAll();
+        Map<String, Object> response = new HashMap<>();
+        if (direcciones.size() == 0){
+            response.put("mensaje", "Aún no hay datos por mostrar.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<List<DireccionUserDTO>>(direcciones, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
@@ -54,32 +60,21 @@ public class DireccionController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     //Los posibles errores se almacenarán en el parámetro de tipo BindingResult(resValida)
-    ResponseEntity<?> registrar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
-        Map<String, Object> response = new HashMap<>();
-        if (validaRespuesta.hasErrors()){
-            response.put("mensaje", "Por favor llene todos los campos.");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-        }else{
-            Direccion dir = direccionService.registrar(direccion, validaRespuesta);
-            return new ResponseEntity<Direccion>(dir, HttpStatus.CREATED);
-        }
+    ResponseEntity<?> registrar(@Valid @RequestBody Direccion direccion){
+        Direccion dir = direccionService.registrar(direccion);
+        return new ResponseEntity<Direccion>(dir, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    ResponseEntity<?> editar(@Valid @RequestBody Direccion direccion, BindingResult validaRespuesta){
+    ResponseEntity<?> editar(@Valid @RequestBody Direccion direccion){
         DireccionUserDTO obtenerDireccion = direccionService.getFullDireccion(direccion.getId());
         Map<String, Object> response = new HashMap<>();
         if (obtenerDireccion == null){
-            response.put("mensaje", "El usuario con id " + direccion.getId() + " no se puede editar.");
+            response.put("mensaje", "El usuario con id " + direccion.getId() + " no existe.");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
-        if (validaRespuesta.hasErrors()){
-            response.put("mensaje", "Por favor llene todos los campos.");
-            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-        }else{
-            Direccion dir = direccionService.editar(direccion, validaRespuesta);
-            return new ResponseEntity<Direccion>(dir, HttpStatus.OK);
-        }
+        Direccion dir = direccionService.editar(direccion);
+        return new ResponseEntity<Direccion>(dir, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
