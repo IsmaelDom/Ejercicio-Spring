@@ -39,8 +39,17 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    Direccion getDireccionById(@PathVariable long id){
-        return direccionService.getDireccionById(id);
+    ResponseEntity<?> getDireccionById(@PathVariable long id){
+        Direccion direccion = direccionService.getDireccionById(id);
+        Map<String, Object> response = new HashMap<>();
+
+        if(direccion == null){
+            //Se agrega un elemento a el Map
+            response.put("mensaje", "El usuario con id: " + id +" no existe en la base de datos.");
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Direccion>(direccion, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
