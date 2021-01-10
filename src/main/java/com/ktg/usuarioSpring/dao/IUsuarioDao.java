@@ -11,5 +11,6 @@ public interface IUsuarioDao {
     Usuario registrar(Usuario user);
     Usuario editar(Usuario user);
     void eliminar(long id);
+    Usuario getUsuarioLogin(String correo);
 
 }

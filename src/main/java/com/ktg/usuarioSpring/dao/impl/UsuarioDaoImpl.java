@@ -19,31 +19,36 @@ public class UsuarioDaoImpl implements IUsuarioDao {
     EntityManager entityManager;
 
     @Override
-    public List<Usuario> getUsuarios(){
+    public List<Usuario> getUsuarios() {
         String hql = "FROM Usuario as u";
         return (List<Usuario>) entityManager.createQuery(hql).getResultList();
     }
 
     @Override
-    public Usuario getUsuarioById(long id){
+    public Usuario getUsuarioById(long id) {
         return entityManager.find(Usuario.class, id);
     }
 
     @Override
-    public Usuario registrar(Usuario user){
+    public Usuario registrar(Usuario user) {
         entityManager.merge(user);
         return user;
     }
 
     @Override
-    public Usuario editar(Usuario user){
+    public Usuario editar(Usuario user) {
         entityManager.merge(user);
         return user;
     }
 
     @Override
-    public void eliminar(long id){
+    public void eliminar(long id) {
         Usuario usuario = getUsuarioById(id);
         entityManager.remove(usuario);
+    }
+
+    @Override
+    public Usuario getUsuarioLogin(String correo) {
+        return entityManager.find(Usuario.class, correo);
     }
 }
