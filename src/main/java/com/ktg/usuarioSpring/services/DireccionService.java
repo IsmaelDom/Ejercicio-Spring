@@ -4,6 +4,8 @@ import com.ktg.usuarioSpring.dao.IDireccionDao;
 import com.ktg.usuarioSpring.controllers.DireccionUserDTO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +67,9 @@ public class DireccionService {
         }else{
             Direccion dir = null;
             //try {
-                dir = direccionDao.registrar(direccion);
+            String hash = generarHash(direccion.getUsuario().getPassword());
+            direccion.getUsuario().setPassword(hash);
+            dir = direccionDao.registrar(direccion);
             /*} catch (DataAccessException ex){
                 log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección: " + ex.getMessage() + ": " +
                                                 ex.getMostSpecificCause().getMessage() + " #######");
@@ -107,5 +111,10 @@ public class DireccionService {
     public void eliminar(long id){
         log.log(Level.INFO, "####### Usuario con Dirección: " + id + " eliminado.");
         direccionDao.eliminar(id);
+    }
+
+    private String generarHash(String password) {
+        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+        return argon2.hash(1, 1024 * 1, 1, password);
     }
 }
