@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 //Direccion url por la que se va a consultar
 @RequestMapping("users")
+@CrossOrigin
 public class UsuarioController {
 
     @Autowired
@@ -73,7 +74,7 @@ public class UsuarioController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST)
     ResponseEntity<?> login(@RequestBody Usuario dto) {
         Usuario user = usuarioService.login(dto);
 
@@ -84,7 +85,7 @@ public class UsuarioController {
             result.put("user", user);
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
         }else{
-            result.put("mensaje", "No hay datos por mostrar");
+            result.put("mensaje", "Usuario o Contraseña incorrecto");
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NOT_FOUND);
         }
     }
