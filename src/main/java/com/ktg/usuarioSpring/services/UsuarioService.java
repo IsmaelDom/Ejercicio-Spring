@@ -2,6 +2,8 @@ package com.ktg.usuarioSpring.services;
 
 import com.ktg.usuarioSpring.dao.IUsuarioDao;
 import com.ktg.usuarioSpring.model.entity.Usuario;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -67,6 +69,8 @@ public class UsuarioService {
             return null;
         }else{
             Usuario usuario = null;
+            String hash = generarHash(user.getPassword());
+            user.setPassword(hash);
             try {
                 usuario = usuarioDao.editar(user);
             } catch (DataAccessException ex){//excepcion de acceso a datos
@@ -83,5 +87,14 @@ public class UsuarioService {
     public void eliminar(long id){
         log.log(Level.INFO, "Usuario con id:" + id + " eliminado.");
         usuarioDao.eliminar(id);
+    }
+
+    private String generarHash(String password) {
+        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+        return argon2.hash(1, 1024 * 1, 1, password);
+    }
+
+    public Usuario login(Usuario user) {
+        return usuarioDao.login(user);
     }
 }
