@@ -2,6 +2,7 @@ package com.ktg.usuarioSpring.controllers;
 
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import com.ktg.usuarioSpring.services.UsuarioService;
+import com.ktg.usuarioSpring.utils.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     //Método para obtener todos los usuarios
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -67,5 +71,21 @@ public class UsuarioController {
         usuarioService.eliminar(id);
         response.put("mensaje", "Usuario con id: " + id + " eliminado.");
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    ResponseEntity<?> login(@RequestBody Usuario dto) {
+        Usuario user = usuarioService.login(dto);
+
+        Map<String, Object> result = new HashMap<>();
+        if (user != null) {
+            String token = jwtUtil.create(String.valueOf(user.getId()), user.getCorreo());
+            result.put("token", token);
+            result.put("user", user);
+            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+        }else{
+            result.put("mensaje", "No hay datos por mostrar");
+            return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NOT_FOUND);
+        }
     }
 }
