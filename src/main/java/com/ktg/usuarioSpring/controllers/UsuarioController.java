@@ -85,7 +85,7 @@ public class UsuarioController {
             result.put("user", user);
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
         }else{
-            result.put("mensaje", "Usuario o Contraseña incorrecto");
+            result.put("mensaje", "Correo o Contraseña incorrecto");
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.NOT_FOUND);
         }
     }
