@@ -49,6 +49,12 @@ public class UsuarioDaoImpl implements IUsuarioDao {
 
     @Override
     public Usuario getUsuarioLogin(String correo) {
-        return entityManager.find(Usuario.class, correo);
+        String hql = "FROM Usuario as u where u.correo = :correo";
+        Usuario query = entityManager.createQuery(hql, Usuario.class).setParameter("correo",correo).getSingleResult();
+        if (query.equals("")){
+            return null;
+        }
+        return query;
+        //return entityManager.find(Usuario.class, correo);
     }
 }
