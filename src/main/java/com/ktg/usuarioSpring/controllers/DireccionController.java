@@ -5,6 +5,7 @@ import com.ktg.usuarioSpring.services.DireccionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,9 @@ public class DireccionController {
     //Genera la inyección de dependencia de un Objeto
     @Autowired
     DireccionService direccionService;
+
+    @Autowired
+    PasswordEncoder encoder;
 
     @GetMapping
     //@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -70,6 +74,8 @@ public class DireccionController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     //Los posibles errores se almacenarán en el parámetro de tipo BindingResult(resValida)
     ResponseEntity<?> registrar(@Valid @RequestBody Direccion direccion){
+        String pass = encoder.encode(direccion.getUsuario().getPassword());
+        direccion.getUsuario().setPassword(pass);
         Direccion dir = direccionService.registrar(direccion);
         return new ResponseEntity<Direccion>(dir, HttpStatus.CREATED);
     }
