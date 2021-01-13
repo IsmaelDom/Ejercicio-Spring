@@ -12,16 +12,19 @@ public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private long id;
-
     private String correo;
+    private String nombre;
+    private String apellido;
 
     @JsonIgnore
     private String password;
 
-    public UserDetailsImpl(long id, String correo, String password) {
+    public UserDetailsImpl(long id, String correo, String password, String nombre, String apellido) {
         this.id = id;
         this.correo = correo;
         this.password = password;
+        this.nombre = nombre;
+        this.apellido = apellido;
     }
 
     public static UserDetailsImpl build(Usuario user) {
@@ -29,12 +32,22 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(
                                     user.getId(),
                                     user.getCorreo(),
-                                    user.getPassword()
+                                    user.getPassword(),
+                                    user.getNombre(),
+                                    user.getApellido()
                                     );
     }
 
     public String getCorreo() {
         return correo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
     }
 
     public long getId() {
@@ -84,5 +97,16 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetailsImpl{" +
+                "id=" + id +
+                ", correo='" + correo + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
