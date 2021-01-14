@@ -32,13 +32,13 @@ public class DireccionController {
     @GetMapping
     //@RequestMapping(value = "/", method = RequestMethod.GET)
     ResponseEntity<?> getAll(){
-        List<DireccionUserDTO> direcciones = direccionService.getAll();
+        List<UsuariosDTO> direcciones = direccionService.getAll();
         Map<String, Object> response = new HashMap<>();
         if (direcciones.size() == 0){
             response.put("mensaje", "Aún no hay datos por mostrar.");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
         }else{
-            return new ResponseEntity<List<DireccionUserDTO>>(direcciones, HttpStatus.OK);
+            return new ResponseEntity<List<UsuariosDTO>>(direcciones, HttpStatus.OK);
         }
     }
 

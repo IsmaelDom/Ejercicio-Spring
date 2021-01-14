@@ -1,5 +1,6 @@
 package com.ktg.usuarioSpring.services;
 
+import com.ktg.usuarioSpring.controllers.UsuariosDTO;
 import com.ktg.usuarioSpring.dao.IDireccionDao;
 import com.ktg.usuarioSpring.controllers.DireccionUserDTO;
 import com.ktg.usuarioSpring.model.entity.Direccion;
@@ -7,12 +8,10 @@ import com.ktg.usuarioSpring.model.entity.Usuario;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 //Anotación que indica que es un servicio y tiene logica de negocio
 @Service
@@ -22,8 +21,25 @@ public class DireccionService {
     @Autowired
     IDireccionDao direccionDao;
 
-    public List<DireccionUserDTO> getAll(){
-        return direccionDao.getAll();
+    public List<UsuariosDTO> getAll(){
+
+        return ((List<Direccion>) direccionDao.getAll())
+                .stream().map(this::convertToUsuariosDTO)
+                .collect(Collectors.toList());
+    }
+
+    private UsuariosDTO convertToUsuariosDTO(Direccion direccion) {
+        UsuariosDTO usuariosDTO = new UsuariosDTO();
+        usuariosDTO.setId(direccion.getId());
+        usuariosDTO.setFullDireccion(direccion.getCalle() + ", No. " +
+                direccion.getNo_exterior() + ", " + direccion.getCp());
+        usuariosDTO.setEstado(direccion.getEstado());
+        usuariosDTO.setMunicipio(direccion.getMunicipio());
+        usuariosDTO.setReferencia(direccion.getReferencia());
+        usuariosDTO.setFullName(direccion.getUsuario().getNombre() + " " + direccion.getUsuario().getApellido());
+        usuariosDTO.setCorreo(direccion.getUsuario().getCorreo());
+        usuariosDTO.setEdad(direccion.getUsuario().getEdad());
+        return usuariosDTO;
     }
 
     public DireccionUserDTO getFullDireccion(long id){
