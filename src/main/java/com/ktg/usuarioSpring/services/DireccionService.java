@@ -7,6 +7,7 @@ import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,10 @@ public class DireccionService {
     @Autowired
     IDireccionDao direccionDao;
 
-    public List<UsuariosDTO> getAll(){
+    @Autowired
+    PasswordEncoder encoder;
 
+    public List<UsuariosDTO> getAll(){
         return ((List<Direccion>) direccionDao.getAll())
                 .stream().map(this::convertToUsuariosDTO)
                 .collect(Collectors.toList());
@@ -80,13 +83,12 @@ public class DireccionService {
             return null;
         }else{
             Direccion dir = null;
-            //try {
-                dir = direccionDao.registrar(direccion);
-            /*} catch (DataAccessException ex){
-                log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección: " + ex.getMessage() + ": " +
-                                                ex.getMostSpecificCause().getMessage() + " #######");
-                return null;
-            }*/
+            //Se encripta contraseña
+            String pass = encoder.encode(direccion.getUsuario().getPassword());
+            //Se settea la contraseña encriptada
+            direccion.getUsuario().setPassword(pass);
+            dir = direccionDao.registrar(direccion);
+
             log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
             log.log(Level.INFO, dir.toString());
             return dir;
