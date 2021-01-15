@@ -1,6 +1,5 @@
 package com.ktg.usuarioSpring.services;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.ktg.usuarioSpring.controllers.UsuariosDTO;
 import com.ktg.usuarioSpring.dao.IDireccionDao;
 import com.ktg.usuarioSpring.controllers.DireccionUserDTO;
@@ -167,31 +166,28 @@ public class DireccionService {
         return result;
     }
 
-    public Direccion editar(Direccion direccion){
-
+    public Map<String, Object> editar(Direccion direccion){
+        Map<String, Object> result = new HashMap<>();
         if(direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty() || direccion.getCp().isEmpty()
                 || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty()
                 || direccion.getMunicipio().isEmpty() || direccion.getUsuario().getCorreo().isEmpty()
                 || direccion.getUsuario().getEdad() <= 0 || direccion.getUsuario().getApellido().isEmpty()
-                || direccion.getUsuario().getNombre().isEmpty() || direccion.getUsuario().getPassword().isEmpty()){
+                || direccion.getUsuario().getNombre().isEmpty() || direccion.getUsuario().getPassword().isEmpty()) {
 
+            result = validaDatos(direccion);
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
-            log.log(Level.SEVERE, "####### Hay campos null");
-
-            return null;
+            log.log(Level.SEVERE, "####### Hay campos null errores:");
+            log.log(Level.SEVERE, result.toString());
         }else{
-            Direccion dir = null;
-            /*try {*/
-                dir = direccionDao.editar(direccion);
-            /*} catch (DataAccessException ex){
-                log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección: " + ex.getMessage() + ": " +
-                        ex.getMostSpecificCause().getMessage() + " #######");
-                return null;
-            }*/
+            Direccion dir = direccionDao.editar(direccion);
+            result.put("mensaje","Usuario editado correctamente");
+            result.put("usuario", dir);
+
             log.log(Level.INFO, "####### Usuario con Dirección Editado Correctamente");
             log.log(Level.INFO, dir.toString());
-            return dir;
         }
+
+        return result;
     }
 
     public void eliminar(long id){
