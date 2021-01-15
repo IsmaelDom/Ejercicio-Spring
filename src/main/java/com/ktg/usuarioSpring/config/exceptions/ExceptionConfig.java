@@ -45,33 +45,33 @@ public class ExceptionConfig {
                         HttpRequestMethodNotSupportedException.class,
                         HttpMessageNotReadableException.class
                         })
-    public ResponseEntity<ErrorInfo> MethodArgumentTypeMismatchException(HttpServletRequest request, MethodArgumentTypeMismatchException e) {
+    public ResponseEntity<ErrorInfo> MethodArgumentTypeMismatchException(HttpServletRequest request, Exception e) {
 
         // get spring errors
         String result = e.getMessage();
 
         // convert errors to standard string
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append("Error el " + e.getName() + " no puede ser '" + e.getValue() + "' ");
+        errorMessage.append("Error: Ha ocurrido un error por favor revise el log para más detalle.");
         log.log(Level.SEVERE, "#### Error-Clase Exception: " + result);
-        log.log(Level.SEVERE, "#### Error en el método: " + e.getParameter() + ". Causa: " + e.getCause());
+        log.log(Level.SEVERE, "#### Error-Causa: " + e.getCause());
 
         // return error info object with standard json
         ErrorInfo errorInfo = new ErrorInfo(errorMessage.toString(), HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<ErrorInfo> DataAccessException(HttpServletRequest request, DataAccessException e) {
+    @ExceptionHandler({DataAccessException.class, HttpClientErrorException.class})
+    public ResponseEntity<ErrorInfo> DataAccessException(HttpServletRequest request, Exception e) {
 
         // get spring errors
         String result = e.getMessage();
 
         // convert errors to standard string
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append("Error: " + e.getCause().getMessage() + ". Causa: " + e.getRootCause().getMessage());
+        errorMessage.append("Error: " + e.getCause().getMessage() + ". Causa: " + e.getCause());
         log.log(Level.SEVERE, "#### Error-Clase Exception: " + result);
-        log.log(Level.SEVERE, "#### Error-Causa más especifica: " + e.getRootCause());
+        log.log(Level.SEVERE, "#### Error-Causa más especifica: " + e.getLocalizedMessage());
 
         // return error info object with standard json
         ErrorInfo errorInfo = new ErrorInfo(errorMessage.toString(), HttpStatus.INTERNAL_SERVER_ERROR.value(), request.getRequestURI());
@@ -80,7 +80,7 @@ public class ExceptionConfig {
 
     @ExceptionHandler({HttpClientErrorException.Unauthorized.class,
                         AccessDeniedException.class})
-    public ResponseEntity<ErrorInfo> Unauthorized(HttpServletRequest request, AccessDeniedException e) {
+    public ResponseEntity<ErrorInfo> Unauthorized(HttpServletRequest request, Exception e) {
         // convert errors to standard string
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append("Error: No esta autorizado para esta acción");
