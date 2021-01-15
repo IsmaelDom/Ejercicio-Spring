@@ -69,8 +69,12 @@ public class DireccionController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     //Los posibles errores se almacenarán en el parámetro de tipo BindingResult(resValida)
     ResponseEntity<?> registrar(@RequestBody Direccion direccion){
-        Map<String, Object> dir = direccionService.registrar(direccion);
-        return new ResponseEntity<Map<String, Object>>(dir, HttpStatus.CREATED);
+        Map<String, Object> dir =  direccionService.registrar(direccion);
+
+        if(dir.equals("usuario") || dir.containsKey("usuario")){
+            return new ResponseEntity<Map<String, Object>>(dir, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<Map<String, Object>>(dir, HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
