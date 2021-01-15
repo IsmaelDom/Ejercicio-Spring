@@ -7,7 +7,6 @@ import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -24,9 +23,6 @@ public class DireccionService {
 
     @Autowired
     IDireccionDao direccionDao;
-
-    @Autowired
-    PasswordEncoder encoder;
 
     public List<UsuariosDTO> getAll(){
         return ((List<Direccion>) direccionDao.getAll())
@@ -102,10 +98,6 @@ public class DireccionService {
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else{
-            //Se encripta contraseña
-            String pass = encoder.encode(direccion.getUsuario().getPassword());
-            //Se settea la contraseña encriptada
-            direccion.getUsuario().setPassword(pass);
             Direccion dir = direccionDao.registrar(direccion);
             result.put("mensaje","usuario registrado correctamente");
             result.put("usuario", dir);
