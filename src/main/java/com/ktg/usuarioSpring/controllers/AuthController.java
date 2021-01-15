@@ -71,7 +71,7 @@ public class AuthController {
         // Create new user's account
         String pass = encoder.encode(direccion.getUsuario().getPassword());
         direccion.getUsuario().setPassword(pass);
-        Direccion dir = direccionService.registrar(direccion);
+        Direccion dir = (Direccion) direccionService.registrar(direccion);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
