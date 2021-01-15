@@ -85,6 +85,22 @@ public class DireccionService {
             log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
             log.log(Level.SEVERE, "Hay valores nulos, errores: ");
             log.log(Level.SEVERE, result.toString());
+        }else if(!validaEnterosConString(direccion.getNo_exterior())){
+            result.put("no_exterior", "Ingrese solo números para el no. exterior.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
+        }else if(!validaEnteros(direccion.getUsuario().getEdad())){
+            result.put("edad", "Ingrese solo números para la edad.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
+        }else if (!validaCorreo(direccion.getUsuario().getCorreo())) {
+            result.put("correo", "Ingrese un correo valido.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
+        }else if(direccion.getUsuario().getPassword().length() < 5){
+            result.put("password", "La contraseña debe tener más de 5 caracteres.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
         }else{
             //Se encripta contraseña
             String pass = encoder.encode(direccion.getUsuario().getPassword());
@@ -132,8 +148,6 @@ public class DireccionService {
         }
         if (direccion.getNo_exterior().isEmpty()) {
             result.put("no_exterior", "Ingrese un No. Exterior.");
-        }else if(!validaEnterosConString(direccion.getNo_exterior())){
-            result.put("no_exterior", "Ingrese solo números para el no. exterior.");
         }
         if (direccion.getCalle().isEmpty()) {
             result.put("calle", "Ingrese una calle.");
@@ -143,13 +157,9 @@ public class DireccionService {
         }
         if (direccion.getUsuario().getCorreo().isEmpty()) {
             result.put("correo", "Ingrese un correo.");
-        } else if (!validaCorreo(direccion.getUsuario().getCorreo())) {
-            result.put("correo", "Ingrese un correo valido.");
         }
         if (direccion.getUsuario().getEdad() <= 0) {
             result.put("edad", "Ingrese una edad.");
-        } else if(!validaEnteros(direccion.getUsuario().getEdad())){
-                result.put("edad", "Ingrese solo números para la edad.");
         }
         if (direccion.getUsuario().getApellido().isEmpty()) {
             result.put("apellido", "Ingrese un apellido.");
@@ -159,16 +169,14 @@ public class DireccionService {
         }
         if (direccion.getUsuario().getPassword().isEmpty()) {
             result.put("password", "Ingrese una contraseña.");
-        }else if(direccion.getUsuario().getPassword().length() < 5){
-            result.put("password", "La contraseña debe tener más de 5 caracteres.");
         }
 
         return result;
     }
 
-    public Map<String, Object> editar(Direccion direccion){
+    public Map<String, Object> editar(Direccion direccion) {
         Map<String, Object> result = new HashMap<>();
-        if(direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty() || direccion.getCp().isEmpty()
+        if (direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty() || direccion.getCp().isEmpty()
                 || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty()
                 || direccion.getMunicipio().isEmpty() || direccion.getUsuario().getCorreo().isEmpty()
                 || direccion.getUsuario().getEdad() <= 0 || direccion.getUsuario().getApellido().isEmpty()
@@ -177,6 +185,22 @@ public class DireccionService {
             result = validaDatos(direccion);
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, "####### Hay campos null errores:");
+            log.log(Level.SEVERE, result.toString());
+        }else if(!validaEnterosConString(direccion.getNo_exterior())){
+            result.put("no_exterior", "Ingrese solo números para el no. exterior.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
+        }else if(!validaEnteros(direccion.getUsuario().getEdad())){
+            result.put("edad", "Ingrese solo números para la edad.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
+        }else if (!validaCorreo(direccion.getUsuario().getCorreo())) {
+            result.put("correo", "Ingrese un correo valido.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
+        }else if(direccion.getUsuario().getPassword().length() < 5){
+            result.put("password", "La contraseña debe tener más de 5 caracteres.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else{
             Direccion dir = direccionDao.editar(direccion);

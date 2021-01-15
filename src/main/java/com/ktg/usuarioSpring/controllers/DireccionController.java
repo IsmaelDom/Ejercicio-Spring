@@ -87,7 +87,7 @@ public class DireccionController {
         }
         Map<String, Object> dir = direccionService.editar(direccion);
 
-        if(dir.equals("usuario") || dir.containsKey("usuario")){
+        if(dir.containsKey("usuario")){
             return new ResponseEntity<Map<String, Object>>(dir, HttpStatus.OK);
         }
 
