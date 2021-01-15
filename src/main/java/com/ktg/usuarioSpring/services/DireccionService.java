@@ -3,6 +3,7 @@ package com.ktg.usuarioSpring.services;
 import com.ktg.usuarioSpring.controllers.UsuariosDTO;
 import com.ktg.usuarioSpring.dao.IDireccionDao;
 import com.ktg.usuarioSpring.controllers.DireccionUserDTO;
+import com.ktg.usuarioSpring.dao.IUsuarioDao;
 import com.ktg.usuarioSpring.model.entity.Direccion;
 import com.ktg.usuarioSpring.model.entity.Usuario;
 import lombok.extern.java.Log;
@@ -23,6 +24,9 @@ public class DireccionService {
 
     @Autowired
     IDireccionDao direccionDao;
+
+    @Autowired
+    IUsuarioDao usuarioDao;
 
     public List<UsuariosDTO> getAll(){
         return ((List<Direccion>) direccionDao.getAll())
@@ -98,12 +102,16 @@ public class DireccionService {
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else{
-            Direccion dir = direccionDao.registrar(direccion);
-            result.put("mensaje","usuario registrado correctamente");
-            result.put("usuario", dir);
+            if (usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo()).toString().isEmpty()) {
+                Direccion dir = direccionDao.registrar(direccion);
+                result.put("mensaje","usuario registrado correctamente");
+                result.put("usuario", dir);
 
-            log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
-            log.log(Level.INFO, dir.toString());
+                log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
+                log.log(Level.INFO, dir.toString());
+            }else{
+                result.put("e-mail","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
+            }
         }
         return result;
     }
@@ -195,15 +203,35 @@ public class DireccionService {
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else{
-            Direccion dir = direccionDao.editar(direccion);
-            result.put("mensaje","Usuario editado correctamente");
-            result.put("usuario", dir);
+            Usuario correo = usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo());
+            if (correo.toString().isEmpty() || !correoDuplicado(direccion, correo)) {
+                Direccion dir = direccionDao.editar(direccion);
+                result.put("mensaje","Usuario editado correctamente");
+                result.put("usuario", dir);
 
-            log.log(Level.INFO, "####### Usuario con Dirección Editado Correctamente");
-            log.log(Level.INFO, dir.toString());
+                log.log(Level.INFO, "####### Usuario con Dirección Editado Correctamente");
+                log.log(Level.INFO, dir.toString());
+            }else{
+                log.log(Level.SEVERE,"El correo " + direccion.getUsuario().getCorreo() + " ya existe en la base de datos.");
+                result.put("e-mail","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
+            }
         }
 
         return result;
+    }
+
+    private boolean correoDuplicado(Direccion direccion, Usuario usuario){
+        Direccion direccionOriginal = direccionDao.getDireccionById(direccion.getId());
+        String correoOriginal = direccionOriginal.getUsuario().getCorreo();
+        String correoEditado = usuario.getCorreo();
+        log.log(Level.INFO,"correoOriginal: " + correoOriginal);
+        log.log(Level.INFO,"correoEditado: " + correoEditado);
+        if(correoOriginal.equals(correoEditado)){
+            log.log(Level.INFO,"Metodo correoDuplicado devuelve falso.");
+            return false;
+        }
+        log.log(Level.INFO,"Metodo correoDuplicado devuelve verdadero.");
+        return true;
     }
 
     public void eliminar(long id){
