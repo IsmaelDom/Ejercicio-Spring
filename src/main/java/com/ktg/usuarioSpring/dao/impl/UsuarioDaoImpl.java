@@ -51,7 +51,7 @@ public class UsuarioDaoImpl implements IUsuarioDao {
     public Usuario getUsuarioLogin(String correo) {
         String hql = "FROM Usuario as u where u.correo = :correo";
         Usuario query = entityManager.createQuery(hql, Usuario.class).setParameter("correo",correo).getSingleResult();
-        if (query.equals("")){
+        if (query.toString().isEmpty()){
             return null;
         }
         return query;
