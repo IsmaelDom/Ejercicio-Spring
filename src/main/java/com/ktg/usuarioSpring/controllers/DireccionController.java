@@ -44,7 +44,7 @@ public class DireccionController {
 
         if(direccion == null){
             //Se agrega un elemento a el Map
-            response.put("mensaje", "El usuario con id: " + id +" no existe en la base de datos.");
+            response.put("mensaje", "El usuario con id: " + id +" no existe.");
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 

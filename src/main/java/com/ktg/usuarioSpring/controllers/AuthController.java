@@ -41,11 +41,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Map<String, Object> response = new HashMap<>();
-        if(loginRequest.getCorreo().isEmpty() || loginRequest.getPassword().isEmpty()){
-            if (loginRequest.getCorreo().isEmpty()){
+        if(loginRequest.getCorreo() == null || loginRequest.getPassword() == null ||
+                loginRequest.getCorreo().isEmpty() || loginRequest.getPassword().isEmpty()){
+            if (loginRequest.getCorreo() == null || loginRequest.getCorreo().isEmpty()){
                 response.put("correo", "El correo no debe estar vacio.");
             }
-            if (loginRequest.getPassword().isEmpty()){
+            if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty()){
                 response.put("contraseña", "La contraseña no debe estar vacia.");
             }
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
