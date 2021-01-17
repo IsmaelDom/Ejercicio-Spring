@@ -8,6 +8,7 @@ import com.ktg.usuarioSpring.security.jwt.JwtUtils;
 import com.ktg.usuarioSpring.security.services.UserDetailsImpl;
 import com.ktg.usuarioSpring.services.DireccionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin()
 @RestController
@@ -36,7 +39,17 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        Map<String, Object> response = new HashMap<>();
+        if(loginRequest.getCorreo().isEmpty() || loginRequest.getPassword().isEmpty()){
+            if (loginRequest.getCorreo().isEmpty()){
+                response.put("correo", "El correo no debe estar vacio.");
+            }
+            if (loginRequest.getPassword().isEmpty()){
+                response.put("contraseña", "La contraseña no debe estar vacia.");
+            }
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getCorreo(), loginRequest.getPassword()));

@@ -6,6 +6,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -92,6 +93,24 @@ public class ExceptionConfig {
         return new ResponseEntity<>(errorInfo, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorInfo> AuthenticationException(HttpServletRequest request, Exception e) {
+
+        // get spring errors
+        String result = e.getMessage();
+
+        // convert errors to standard string
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append("Contraseña o correo incorrecto");
+        log.log(Level.SEVERE, "#### Error-Clase AuthenticationException: " + result);
+        log.log(Level.SEVERE, "#### Error-Causa más especifica: " + e.getCause());
+        log.log(Level.SEVERE, "#### Error Localización: " + e.getLocalizedMessage());
+
+        // return error info object with standard json
+        ErrorInfo errorInfo = new ErrorInfo(errorMessage.toString(), HttpStatus.UNAUTHORIZED.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorInfo> Exception(HttpServletRequest request, Exception e) {
 
@@ -100,7 +119,7 @@ public class ExceptionConfig {
 
         // convert errors to standard string
         StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append("Error: " + e.getCause().getMessage() + ". Causa: " + e.getCause().getMessage());
+        errorMessage.append("Error: " + e.getCause());
         log.log(Level.SEVERE, "#### Error-Clase Exception excepción de tipo Exception: " + result);
         log.log(Level.SEVERE, "#### Error-Causa más especifica: " + e.getCause());
         log.log(Level.SEVERE, "#### Error Localización: " + e.getLocalizedMessage());
