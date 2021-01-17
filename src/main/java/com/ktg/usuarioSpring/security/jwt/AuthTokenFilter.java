@@ -43,9 +43,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             log.log(Level.SEVERE,"Cannot set user authentication: {}", e);
         }
-        log.log(Level.INFO,"Antes del doFilter request: " + httpServletRequest.toString());
-        log.log(Level.INFO,"Antes del doFilter response: " + httpServletResponse.toString());
-        log.log(Level.INFO,"Antes del doFilter filterChain: " + filterChain.toString());
+
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
