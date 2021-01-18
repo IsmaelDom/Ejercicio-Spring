@@ -34,6 +34,9 @@ public class Usuario {
     @Column(nullable = false, length = 100)
     private String apellido;
 
+    //@Column(nullable = false, length = 100)
+    //private String apellidoMaterno;
+
     //@JsonIgnore
     @NotBlank(message = "La contraseña no puede ser nula.")
     //Propiedad para que la contraseña solo se pueda escribir

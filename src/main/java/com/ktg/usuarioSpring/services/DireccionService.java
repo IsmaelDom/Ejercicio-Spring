@@ -105,6 +105,10 @@ public class DireccionService {
             result.put("password", "La contraseña debe tener más de 5 caracteres.");
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
+        }else if(!validaCurp(direccion.getUsuario().getCurp())){
+            result.put("curp", "Ingrese una CURP valida.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
         }else{
             if (usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo()).toString().isEmpty()) {
                 Direccion dir = direccionDao.registrar(direccion);
@@ -131,6 +135,14 @@ public class DireccionService {
         String convertirInt = String.valueOf(numero);
         log.log(Level.INFO,"###### Método validaEnteros devuelve: " + Pattern.matches(regexp, convertirInt) + " ######");
         return Pattern.matches(regexp, convertirInt);
+    }
+
+    private boolean validaCurp(String curp){
+        String regexp = "^[A-Z][AEIOUX][A-Z]{2}\\d{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d][0-9]{1}$";
+        curp = curp.toUpperCase().trim();
+        log.log(Level.INFO,"CURP: " + curp);
+        log.log(Level.INFO,"###### Método validaCurp devuelve: " + Pattern.matches(regexp, curp) + " ######");
+        return Pattern.matches(regexp, curp);
     }
 
     private boolean validaEnterosConString(String cadena){
@@ -212,9 +224,15 @@ public class DireccionService {
             result.put("password", "La contraseña debe tener más de 5 caracteres.");
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
+        }else if(!validaCurp(direccion.getUsuario().getCurp())){
+            result.put("curp", "Ingrese una CURP valida.");
+            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, result.toString());
         }else{
-            Usuario correo = usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo());
-            if (correo.toString().isEmpty() || !correoDuplicado(direccion, correo)) {
+            //Usuario correo = usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo());
+            //log.log(Level.INFO,"correo: " + correo);
+            log.log(Level.INFO,"direccion: " + direccion);
+            if (direccion.getUsuario().getCorreo().isEmpty() || correoDuplicado(direccion)) {
                 Direccion dir = direccionDao.editar(direccion);
                 result.put("exito","Usuario editado correctamente");
                 result.put("usuario", dir);
@@ -230,18 +248,23 @@ public class DireccionService {
         return result;
     }
 
-    private boolean correoDuplicado(Direccion direccion, Usuario usuario){
+    private boolean correoDuplicado(Direccion direccion){
         Direccion direccionOriginal = direccionDao.getDireccionById(direccion.getId());
         String correoOriginal = direccionOriginal.getUsuario().getCorreo();
-        String correoEditado = usuario.getCorreo();
+        String correoEditado = direccion.getUsuario().getCorreo();
         log.log(Level.INFO,"correoOriginal: " + correoOriginal);
         log.log(Level.INFO,"correoEditado: " + correoEditado);
         if(correoOriginal.equals(correoEditado)){
-            log.log(Level.INFO,"Metodo correoDuplicado devuelve falso.");
-            return false;
+            log.log(Level.INFO,"Metodo correoDuplicado devuelve verdadero.");
+            return true;
         }
-        log.log(Level.INFO,"Metodo correoDuplicado devuelve verdadero.");
-        return true;
+        Usuario correo = usuarioDao.getUsuarioLogin(correoEditado);
+        if(correo.getCorreo().isEmpty() || correo.getCorreo() == null){
+            log.log(Level.INFO,"Metodo correoDuplicado devuelve verdadero-No existe.");
+            return true;
+        }
+        log.log(Level.INFO,"Metodo correoDuplicado devuelve falso.");
+        return false;
     }
 
     public void eliminar(long id){
