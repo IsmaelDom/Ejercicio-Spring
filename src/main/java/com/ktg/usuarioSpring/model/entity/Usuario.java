@@ -47,4 +47,7 @@ public class Usuario {
     @Max(value = 120, message = "Ingrese una edad valida.")
     @Column(nullable = false, length = 3)
     private int edad;
+
+    @Column(nullable = false, length = 20)
+    private String curp;
 }

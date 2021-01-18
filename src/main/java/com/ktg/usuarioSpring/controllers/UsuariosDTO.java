@@ -17,6 +17,7 @@ public class UsuariosDTO implements Serializable {
     private String referencia;
     private String fullName;
     private String correo;
+    private String curp;
     private int edad;
 
 }

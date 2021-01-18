@@ -45,6 +45,7 @@ public class DireccionService {
         usuariosDTO.setFullName(direccion.getUsuario().getNombre() + " " + direccion.getUsuario().getApellido());
         usuariosDTO.setCorreo(direccion.getUsuario().getCorreo());
         usuariosDTO.setEdad(direccion.getUsuario().getEdad());
+        usuariosDTO.setCurp(direccion.getUsuario().getCurp());
         return usuariosDTO;
     }
 
@@ -79,7 +80,7 @@ public class DireccionService {
         if(direccion.getNo_exterior() == null || direccion.getEstado() == null || direccion.getCp() == null || direccion.getCalle() == null
                 || direccion.getUsuario().getApellido() == null || direccion.getMunicipio() == null || direccion.getUsuario().getCorreo() == null
                 || direccion.getUsuario().getNombre() == null || direccion.getUsuario().getPassword() == null || direccion.getReferencia() == null
-                || direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty()
+                || direccion.getUsuario().getCurp() == null || direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty()
                 || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty() || direccion.getCp().isEmpty()
                 || direccion.getMunicipio().isEmpty() || direccion.getUsuario().getCorreo().isEmpty()
                 || direccion.getUsuario().getEdad() <= 0 || direccion.getUsuario().getApellido().isEmpty()
@@ -173,6 +174,9 @@ public class DireccionService {
         if (direccion.getUsuario().getPassword() == null || direccion.getUsuario().getPassword().isEmpty()) {
             result.put("password", "Ingrese una contraseña.");
         }
+        if (direccion.getUsuario().getCurp() == null || direccion.getUsuario().getCurp().isEmpty()) {
+            result.put("curp", "Ingrese una CURP.");
+        }
 
         return result;
     }
@@ -182,7 +186,7 @@ public class DireccionService {
         if (direccion.getNo_exterior() == null || direccion.getEstado() == null || direccion.getCp() == null || direccion.getCalle() == null
                 || direccion.getUsuario().getApellido() == null || direccion.getMunicipio() == null || direccion.getUsuario().getCorreo() == null
                 || direccion.getUsuario().getNombre() == null || direccion.getUsuario().getPassword() == null || direccion.getReferencia() == null
-                || direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty()
+                || direccion.getUsuario().getCurp() == null || direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty()
                 || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty() || direccion.getCp().isEmpty()
                 || direccion.getMunicipio().isEmpty() || direccion.getUsuario().getCorreo().isEmpty()
                 || direccion.getUsuario().getEdad() <= 0 || direccion.getUsuario().getApellido().isEmpty()
