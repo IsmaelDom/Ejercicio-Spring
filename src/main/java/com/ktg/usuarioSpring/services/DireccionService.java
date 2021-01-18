@@ -76,8 +76,11 @@ public class DireccionService {
     public Map<String, Object> registrar(Direccion direccion) {
         Map<String, Object> result = new HashMap<>();
 
-        if(direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty() || direccion.getCp().isEmpty()
-                || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty()
+        if(direccion.getNo_exterior() == null || direccion.getEstado() == null || direccion.getCp() == null || direccion.getCalle() == null
+                || direccion.getUsuario().getApellido() == null || direccion.getMunicipio() == null || direccion.getUsuario().getCorreo() == null
+                || direccion.getUsuario().getNombre() == null || direccion.getUsuario().getPassword() == null || direccion.getReferencia() == null
+                || direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty()
+                || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty() || direccion.getCp().isEmpty()
                 || direccion.getMunicipio().isEmpty() || direccion.getUsuario().getCorreo().isEmpty()
                 || direccion.getUsuario().getEdad() <= 0 || direccion.getUsuario().getApellido().isEmpty()
                 || direccion.getUsuario().getNombre().isEmpty() || direccion.getUsuario().getPassword().isEmpty()) {
@@ -104,13 +107,13 @@ public class DireccionService {
         }else{
             if (usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo()).toString().isEmpty()) {
                 Direccion dir = direccionDao.registrar(direccion);
-                result.put("mensaje","usuario registrado correctamente");
+                result.put("mensaje","Usuario registrado correctamente");
                 result.put("usuario", dir);
 
                 log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
                 log.log(Level.INFO, dir.toString());
             }else{
-                result.put("e-mail","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
+                result.put("correo","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
             }
         }
         return result;
@@ -137,37 +140,37 @@ public class DireccionService {
 
     private Map<String, Object> validaDatos(Direccion direccion){
         Map<String, Object> result = new HashMap<>();
-        if (direccion.getEstado().isEmpty()) {
+        if (direccion.getEstado() == null || direccion.getEstado().isEmpty()) {
             result.put("estado", "Ingrese un estado.");
         }
-        if (direccion.getReferencia().isEmpty() || direccion.getReferencia().trim().isEmpty()) {
+        if (direccion.getReferencia() == null || direccion.getReferencia().isEmpty() || direccion.getReferencia().trim().isEmpty()) {
             result.put("referencia", "Ingrese una referencia.");
         }
-        if (direccion.getCp().isEmpty()) {
+        if (direccion.getCp() == null || direccion.getCp().isEmpty()) {
             result.put("cp", "Ingrese un código postal.");
         }
-        if (direccion.getNo_exterior().isEmpty()) {
+        if (direccion.getNo_exterior() == null || direccion.getNo_exterior().isEmpty()) {
             result.put("no_exterior", "Ingrese un No. Exterior.");
         }
-        if (direccion.getCalle().isEmpty()) {
+        if (direccion.getCalle() == null || direccion.getCalle().isEmpty()) {
             result.put("calle", "Ingrese una calle.");
         }
-        if (direccion.getMunicipio().isEmpty()) {
+        if (direccion.getMunicipio() == null || direccion.getMunicipio().isEmpty()) {
             result.put("municipio", "Ingrese un municipio.");
         }
-        if (direccion.getUsuario().getCorreo().isEmpty()) {
+        if (direccion.getUsuario().getCorreo() == null || direccion.getUsuario().getCorreo().isEmpty()) {
             result.put("correo", "Ingrese un correo.");
         }
         if (direccion.getUsuario().getEdad() <= 0) {
             result.put("edad", "Ingrese una edad.");
         }
-        if (direccion.getUsuario().getApellido().isEmpty()) {
+        if (direccion.getUsuario().getApellido() == null || direccion.getUsuario().getApellido().isEmpty()) {
             result.put("apellido", "Ingrese un apellido.");
         }
-        if (direccion.getUsuario().getNombre().isEmpty()) {
+        if (direccion.getUsuario().getNombre() == null || direccion.getUsuario().getNombre().isEmpty()) {
             result.put("nombre", "Ingrese un nombre.");
         }
-        if (direccion.getUsuario().getPassword().isEmpty()) {
+        if (direccion.getUsuario().getPassword() == null || direccion.getUsuario().getPassword().isEmpty()) {
             result.put("password", "Ingrese una contraseña.");
         }
 
@@ -176,8 +179,11 @@ public class DireccionService {
 
     public Map<String, Object> editar(Direccion direccion) {
         Map<String, Object> result = new HashMap<>();
-        if (direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty() || direccion.getCp().isEmpty()
-                || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty()
+        if (direccion.getNo_exterior() == null || direccion.getEstado() == null || direccion.getCp() == null || direccion.getCalle() == null
+                || direccion.getUsuario().getApellido() == null || direccion.getMunicipio() == null || direccion.getUsuario().getCorreo() == null
+                || direccion.getUsuario().getNombre() == null || direccion.getUsuario().getPassword() == null || direccion.getReferencia() == null
+                || direccion.getEstado().isEmpty() || direccion.getReferencia().isEmpty()
+                || direccion.getNo_exterior().isEmpty() || direccion.getCalle().isEmpty() || direccion.getCp().isEmpty()
                 || direccion.getMunicipio().isEmpty() || direccion.getUsuario().getCorreo().isEmpty()
                 || direccion.getUsuario().getEdad() <= 0 || direccion.getUsuario().getApellido().isEmpty()
                 || direccion.getUsuario().getNombre().isEmpty() || direccion.getUsuario().getPassword().isEmpty()) {
@@ -213,7 +219,7 @@ public class DireccionService {
                 log.log(Level.INFO, dir.toString());
             }else{
                 log.log(Level.SEVERE,"El correo " + direccion.getUsuario().getCorreo() + " ya existe en la base de datos.");
-                result.put("e-mail","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
+                result.put("correo","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
             }
         }
 
