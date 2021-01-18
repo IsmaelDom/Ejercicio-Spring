@@ -206,7 +206,7 @@ public class DireccionService {
             Usuario correo = usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo());
             if (correo.toString().isEmpty() || !correoDuplicado(direccion, correo)) {
                 Direccion dir = direccionDao.editar(direccion);
-                result.put("mensaje","Usuario editado correctamente");
+                result.put("exito","Usuario editado correctamente");
                 result.put("usuario", dir);
 
                 log.log(Level.INFO, "####### Usuario con Dirección Editado Correctamente");
