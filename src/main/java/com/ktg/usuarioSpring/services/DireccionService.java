@@ -254,13 +254,11 @@ public class DireccionService {
         String correoEditado = direccion.getUsuario().getCorreo();
         log.log(Level.INFO,"correoOriginal: " + correoOriginal);
         log.log(Level.INFO,"correoEditado: " + correoEditado);
-        if(correoOriginal.equals(correoEditado)){
-            log.log(Level.INFO,"Metodo correoDuplicado devuelve verdadero.");
-            return true;
-        }
+        
         Usuario correo = usuarioDao.getUsuarioLogin(correoEditado);
-        if(correo.getCorreo().isEmpty() || correo.getCorreo() == null){
-            log.log(Level.INFO,"Metodo correoDuplicado devuelve verdadero-No existe.");
+
+        if(correoOriginal.equals(correoEditado) || correo == null){
+            log.log(Level.INFO,"Metodo correoDuplicado devuelve verdadero.");
             return true;
         }
         log.log(Level.INFO,"Metodo correoDuplicado devuelve falso.");
