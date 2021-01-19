@@ -138,7 +138,8 @@ public class DireccionService {
     }
 
     private boolean validaCurp(String curp){
-        String regexp = "^[A-Z][AEIOUX][A-Z]{2}\\d{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d][0-9]{1}$";
+        String regexp = "^[A-Z][AEIOUX][A-Z]{2}\\d{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}" +
+                "(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d][0-9]{1}$";
         curp = curp.toUpperCase().trim();
         log.log(Level.INFO,"CURP: " + curp);
         log.log(Level.INFO,"###### Método validaCurp devuelve: " + Pattern.matches(regexp, curp) + " ######");
@@ -232,7 +233,9 @@ public class DireccionService {
             //Usuario correo = usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo());
             //log.log(Level.INFO,"correo: " + correo);
             log.log(Level.INFO,"direccion: " + direccion);
-            if (direccion.getUsuario().getCorreo().isEmpty() || correoDuplicado(direccion)) {
+            boolean correoRepetido = correoDuplicado(direccion);
+            boolean curpRepetida = curpDuplicado(direccion);
+            if (correoRepetido || curpRepetida) {
                 Direccion dir = direccionDao.editar(direccion);
                 result.put("exito","Usuario editado correctamente");
                 result.put("usuario", dir);
@@ -240,8 +243,13 @@ public class DireccionService {
                 log.log(Level.INFO, "####### Usuario con Dirección Editado Correctamente");
                 log.log(Level.INFO, dir.toString());
             }else{
-                log.log(Level.SEVERE,"El correo " + direccion.getUsuario().getCorreo() + " ya existe en la base de datos.");
-                result.put("correo","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
+                if (!correoRepetido){
+                    log.log(Level.SEVERE,"El correo " + direccion.getUsuario().getCorreo() + " ya existe en la base de datos.");
+                    result.put("correo","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
+                }else{
+                    log.log(Level.SEVERE,"La CURP " + direccion.getUsuario().getCurp() + " ya existe en la base de datos.");
+                    result.put("curp","La CURP " + direccion.getUsuario().getCurp()+ " ya existe.");
+                }
             }
         }
 
@@ -254,14 +262,31 @@ public class DireccionService {
         String correoEditado = direccion.getUsuario().getCorreo();
         log.log(Level.INFO,"correoOriginal: " + correoOriginal);
         log.log(Level.INFO,"correoEditado: " + correoEditado);
-        
+
         Usuario correo = usuarioDao.getUsuarioLogin(correoEditado);
 
-        if(correoOriginal.equals(correoEditado) || correo == null){
+        if(correo == null || correoOriginal.equals(correoEditado)){
             log.log(Level.INFO,"Metodo correoDuplicado devuelve verdadero.");
             return true;
         }
         log.log(Level.INFO,"Metodo correoDuplicado devuelve falso.");
+        return false;
+    }
+
+    private boolean curpDuplicado(Direccion direccion){
+        Direccion direccionOriginal = direccionDao.getDireccionById(direccion.getId());
+        String curpOriginal = direccionOriginal.getUsuario().getCurp();
+        String curpEditado = direccion.getUsuario().getCurp();
+        log.log(Level.INFO,"curpOriginal: " + curpOriginal);
+        log.log(Level.INFO,"curpEditado: " + curpEditado);
+
+        Usuario curp = usuarioDao.getCurp(curpEditado);
+
+        if(curp == null || curpOriginal.equals(curpEditado)){
+            log.log(Level.INFO,"Metodo curpDuplicado devuelve verdadero.");
+            return true;
+        }
+        log.log(Level.INFO,"Metodo curpDuplicado devuelve falso.");
         return false;
     }
 
