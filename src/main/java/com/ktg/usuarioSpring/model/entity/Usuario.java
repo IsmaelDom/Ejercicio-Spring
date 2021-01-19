@@ -51,6 +51,9 @@ public class Usuario {
     @Column(nullable = false, length = 3)
     private int edad;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String curp;
+
+    @Column(nullable = false, length = 1)
+    private String status;
 }

@@ -50,4 +50,7 @@ public class Direccion {
     @NotBlank(message = "La Referencia no pueder se nula.")
     @Column(nullable = false)
     private String referencia;
+
+    @Column(nullable = false, length = 1)
+    private String status;
 }
