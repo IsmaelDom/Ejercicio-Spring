@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Objects;
 
+//Contiene la información del usuario logeado con el cual se crea un objeto de autenticación.
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 

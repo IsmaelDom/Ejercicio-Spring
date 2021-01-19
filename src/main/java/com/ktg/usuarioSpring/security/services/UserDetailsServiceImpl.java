@@ -20,13 +20,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     IUsuarioDao usuarioDao;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Usuario usuario = usuarioDao.getUsuarioLogin(s);
+    //Obtiene el usuario por medio del correo y devuelve un UserDetails que es un
+    //objeto que Spring Security puede usar para autenticación y validación.
+    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
+        Usuario usuario = usuarioDao.getUsuarioLogin(correo);
         log.log(Level.INFO,"UserDetailsServiceImp " + usuario);
         User.UserBuilder builder = null;
 
         if (usuario != null){
-            builder = User.withUsername(s);
+            builder = User.withUsername(correo);
             builder.disabled(false);
             builder.password(usuario.getPassword());
         }else{

@@ -41,6 +41,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Map<String, Object> response = new HashMap<>();
+        //Se valida que el correo y la contraseña no sea null
         if(loginRequest.getCorreo() == null || loginRequest.getPassword() == null ||
                 loginRequest.getCorreo().isEmpty() || loginRequest.getPassword().isEmpty()){
             if (loginRequest.getCorreo() == null || loginRequest.getCorreo().isEmpty()){
@@ -52,6 +53,8 @@ public class AuthController {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
+        //UsernamePasswordAuthenticationToken: obtiene {correo, contraseña} de la solicitud de inicio de sesión
+        //authenticationManager: se utiliza para autenticar una cuenta de inicio de sesión.
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getCorreo(), loginRequest.getPassword()));
 

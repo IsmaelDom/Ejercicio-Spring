@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    // HttpSecurity permite configurar cors, csrf, gestión de sesiones, reglas para recursos protegidos
     protected void configure(HttpSecurity http) throws Exception {
         /*http.authorizeRequests().antMatchers("/users/login","/css/**","/icons/**","/js/**")
                 .permitAll().anyRequest().authenticated()

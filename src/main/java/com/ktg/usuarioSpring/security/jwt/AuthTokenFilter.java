@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 @Log
+//Preprocesa la solicitud HTTP desde el Token.
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
@@ -26,6 +27,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private UserDetailsServiceImpl userDetailsService;
 
     @Override
+    //método que se usa para analizar y validar JWT, cargando los detalles del usuario
+    //(usando UserDetailsService), se verifica la autorización (usando UsernamePasswordAuthenticationToken).
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = parseJwt(httpServletRequest);

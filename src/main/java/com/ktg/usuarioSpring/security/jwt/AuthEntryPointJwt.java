@@ -16,8 +16,10 @@ import java.util.logging.Level;
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
     @Override
+    //Detecta si hay un error de autenticación.
+    //Este método se activará cada vez que un usuario no autenticado solicite un recurso HTTP seguro.
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        log.log(Level.SEVERE,"No esta autorizado, error: " + e.getMessage());
+        log.log(Level.SEVERE,"No tiene autorización, error: " + e.getMessage());
         httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
     }
 }
