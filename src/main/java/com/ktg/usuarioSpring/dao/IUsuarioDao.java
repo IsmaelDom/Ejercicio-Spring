@@ -13,4 +13,5 @@ public interface IUsuarioDao {
     void eliminar(long id);
     Usuario getUsuarioLogin(String correo);
 
+    Usuario getCurp(String curp);
 }

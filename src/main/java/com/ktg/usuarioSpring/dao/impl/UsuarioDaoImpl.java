@@ -59,4 +59,15 @@ public class UsuarioDaoImpl implements IUsuarioDao {
         return resultado.get(0);
         //return entityManager.find(Usuario.class, correo);
     }
+
+    @Override
+    public Usuario getCurp(String curp) {
+        String hql = "FROM Usuario as u where u.curp = :curp";// and status = 1";
+        List<Usuario> resultado = entityManager.createQuery(hql.toString()).setParameter("curp", curp)
+                .getResultList();
+        if (resultado.size() == 0){// query.toString().isEmpty()){
+            return null;
+        }
+        return resultado.get(0);
+    }
 }
