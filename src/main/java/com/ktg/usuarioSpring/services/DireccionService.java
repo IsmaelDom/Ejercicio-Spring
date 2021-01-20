@@ -52,7 +52,7 @@ public class DireccionService {
     public DireccionUserDTO getFullDireccion(long id){
         DireccionUserDTO dto;
 
-        Direccion dir = direccionDao.getDireccionById(id);
+        Direccion dir = direccionDao.getDireccionByIdAndStatus(id);
         if (dir == null){
             log.log(Level.SEVERE, "Error al obtener usuario con dirección, no existe usuario con id: " + id);
             return null;
@@ -70,7 +70,7 @@ public class DireccionService {
     }
 
     public Direccion getDireccionById(long id){
-        return direccionDao.getDireccionById(id);
+        return direccionDao.getDireccionByIdAndStatus(id);
     }
 
     //Los posibles errores se almacenan en el parámetro de tipo BindingResult(resValida)
@@ -119,7 +119,7 @@ public class DireccionService {
                 direccion.getUsuario().setStatus("1");
                 direccion.setStatus("1");
                 Direccion dir = direccionDao.registrar(direccion);
-                result.put("mensaje","Usuario registrado correctamente");
+                result.put("exito","Usuario registrado correctamente");
                 result.put("usuario", dir);
 
                 log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
@@ -308,5 +308,20 @@ public class DireccionService {
     public void eliminar(long id){
         log.log(Level.INFO, "####### Usuario con Dirección: " + id + " eliminado.");
         direccionDao.eliminar(id);
+    }
+
+    public Map<String, Object> eliminacionLogica(long id){
+        Map<String, Object> result = new HashMap<>();
+        DireccionUserDTO validaDireccion = getFullDireccion(id);
+        if(validaDireccion == null){
+            result.put("error", "El usuario con id: " + id +" no existe.");
+        }else{
+            String dir = direccionDao.eliminaLogica(id);
+            result.put("exito", "Usuario con id " + id + " eliminado correctamente");
+            log.log(Level.INFO, "####### Usuario con Dirección Eliminado Correctamente");
+            log.log(Level.INFO, dir.toString());
+        }
+        log.log(Level.INFO, "Metodo eliminacionLogica devuelve: " + result);
+        return result;
     }
 }
