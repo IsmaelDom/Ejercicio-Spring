@@ -91,26 +91,33 @@ public class DireccionService {
             log.log(Level.SEVERE, result.toString());
         }else if(!validaEnterosConString(direccion.getNo_exterior())){
             result.put("no_exterior", "Ingrese solo números para el no. exterior.");
-            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else if(!validaEnteros(direccion.getUsuario().getEdad())){
             result.put("edad", "Ingrese solo números para la edad.");
-            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else if (!validaCorreo(direccion.getUsuario().getCorreo())) {
             result.put("correo", "Ingrese un correo valido.");
-            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else if(direccion.getUsuario().getPassword().length() < 5){
             result.put("password", "La contraseña debe tener más de 5 caracteres.");
-            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else if(!validaCurp(direccion.getUsuario().getCurp())){
             result.put("curp", "Ingrese una CURP valida.");
-            log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
+            log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
         }else{
-            if (usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo()).toString().isEmpty()) {
+            Usuario correo = usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo());
+            String curp = direccion.getUsuario().getCurp();
+            curp = curp.toUpperCase().trim();
+            direccion.getUsuario().setCurp(curp);
+            Usuario validaCurp = usuarioDao.getCurp(curp);
+            if (correo == null && validaCurp == null) {
+                direccion.getUsuario().setStatus("1");
+                direccion.setStatus("1");
                 Direccion dir = direccionDao.registrar(direccion);
                 result.put("mensaje","Usuario registrado correctamente");
                 result.put("usuario", dir);
@@ -118,38 +125,44 @@ public class DireccionService {
                 log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
                 log.log(Level.INFO, dir.toString());
             }else{
-                result.put("correo","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
+                if (correo != null){
+                    log.log(Level.SEVERE,"El correo " + direccion.getUsuario().getCorreo() + " ya existe en la base de datos.");
+                    result.put("correo","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
+                }else{
+                    log.log(Level.SEVERE,"La CURP " + direccion.getUsuario().getCurp() + " ya existe en la base de datos.");
+                    result.put("curp","La CURP " + direccion.getUsuario().getCurp()+ " ya existe.");
+                }
             }
         }
         return result;
     }
 
     private boolean validaCorreo(String email){
-        String regexp = "^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+?@[a-zA-Z0-9-]+\\.[a-zA-Z0-9]+[.a-zA-Z]{0,3}$";
-        log.log(Level.INFO,"###### Método validaCorreo devuelve: " + Pattern.matches(regexp, email) + " ######");
-        return Pattern.matches(regexp, email);
+        String REGEXP = "^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+?@[a-zA-Z0-9-]+\\.[a-zA-Z0-9]+[.a-zA-Z]{0,3}$";
+        log.log(Level.INFO,"###### Método validaCorreo devuelve: " + Pattern.matches(REGEXP, email) + " ######");
+        return Pattern.matches(REGEXP, email);
     }
 
     private boolean validaEnteros(int numero){
-        String regexp = "^[1-9][0-9]?[0-9]?$";
+        String REGEXP = "^[1-9][0-9]?[0-9]?$";
         String convertirInt = String.valueOf(numero);
-        log.log(Level.INFO,"###### Método validaEnteros devuelve: " + Pattern.matches(regexp, convertirInt) + " ######");
-        return Pattern.matches(regexp, convertirInt);
+        log.log(Level.INFO,"###### Método validaEnteros devuelve: " + Pattern.matches(REGEXP, convertirInt) + " ######");
+        return Pattern.matches(REGEXP, convertirInt);
     }
 
     private boolean validaCurp(String curp){
-        String regexp = "^[A-Z][AEIOUX][A-Z]{2}\\d{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}" +
+        String REGEXP = "^[A-Z][AEIOUX][A-Z]{2}\\d{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}" +
                 "(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d][0-9]{1}$";
         curp = curp.toUpperCase().trim();
         log.log(Level.INFO,"CURP: " + curp);
-        log.log(Level.INFO,"###### Método validaCurp devuelve: " + Pattern.matches(regexp, curp) + " ######");
-        return Pattern.matches(regexp, curp);
+        log.log(Level.INFO,"###### Método validaCurp devuelve: " + Pattern.matches(REGEXP, curp) + " ######");
+        return Pattern.matches(REGEXP, curp);
     }
 
     private boolean validaEnterosConString(String cadena){
-        String regexp = "^\\d+$";
-        log.log(Level.INFO,"###### Método validaEnterosConString devuelve: " + Pattern.matches(regexp, cadena) + " ######");
-        return Pattern.matches(regexp, cadena);
+        String REGEXP = "^\\d+$";
+        log.log(Level.INFO,"###### Método validaEnterosConString devuelve: " + Pattern.matches(REGEXP, cadena) + " ######");
+        return Pattern.matches(REGEXP, cadena);
     }
 
     private Map<String, Object> validaDatos(Direccion direccion){
@@ -232,10 +245,12 @@ public class DireccionService {
         }else{
             //Usuario correo = usuarioDao.getUsuarioLogin(direccion.getUsuario().getCorreo());
             //log.log(Level.INFO,"correo: " + correo);
-            log.log(Level.INFO,"direccion: " + direccion);
+            String curp = direccion.getUsuario().getCurp();
+            curp = curp.toUpperCase().trim();
+            direccion.getUsuario().setCurp(curp);
             boolean correoRepetido = correoDuplicado(direccion);
             boolean curpRepetida = curpDuplicado(direccion);
-            if (correoRepetido || curpRepetida) {
+            if (correoRepetido && curpRepetida) {
                 Direccion dir = direccionDao.editar(direccion);
                 result.put("exito","Usuario editado correctamente");
                 result.put("usuario", dir);
