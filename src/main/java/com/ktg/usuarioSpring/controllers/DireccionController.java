@@ -108,4 +108,14 @@ public class DireccionController {
         response.put("mensaje", "Usuario con id: " + id + " eliminado.");
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+        //ResponseEntity maneja respuestas HTTP
+    ResponseEntity<?> eliminacionLogica(@PathVariable long id){
+        Map<String, Object> dir =  direccionService.eliminacionLogica(id);
+        if(dir.containsKey("exito")){
+            return new ResponseEntity<Map<String, Object>>(dir, HttpStatus.OK);
+        }
+        return new ResponseEntity<Map<String, Object>>(dir, HttpStatus.NOT_FOUND);
+    }
 }
