@@ -20,7 +20,7 @@ public class UsuarioDaoImpl implements IUsuarioDao {
 
     @Override
     public List<Usuario> getUsuarios() {
-        String hql = "FROM Usuario as u";
+        String hql = "FROM Usuario as u where u.status = 1";
         return (List<Usuario>) entityManager.createQuery(hql).getResultList();
     }
 
@@ -49,7 +49,7 @@ public class UsuarioDaoImpl implements IUsuarioDao {
 
     @Override
     public Usuario getUsuarioLogin(String correo) {
-        String hql = "FROM Usuario as u where u.correo = :correo";
+        String hql = "FROM Usuario as u where u.correo = :correo and u.status = 1";
         //Usuario query = entityManager.createQuery(hql, Usuario.class).setParameter("correo",correo).getSingleResult();
         List<Usuario> resultado = entityManager.createQuery(hql.toString()).setParameter("correo", correo)
                                     .getResultList();
@@ -62,7 +62,7 @@ public class UsuarioDaoImpl implements IUsuarioDao {
 
     @Override
     public Usuario getCurp(String curp) {
-        String hql = "FROM Usuario as u where u.curp = :curp";// and status = 1";
+        String hql = "FROM Usuario as u where u.curp = :curp and u.status = 1";
         List<Usuario> resultado = entityManager.createQuery(hql.toString()).setParameter("curp", curp)
                 .getResultList();
         if (resultado.size() == 0){// query.toString().isEmpty()){
