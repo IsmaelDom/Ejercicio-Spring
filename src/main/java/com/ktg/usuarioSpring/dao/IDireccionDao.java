@@ -14,5 +14,5 @@ public interface IDireccionDao {
     void eliminar(long id);
 
     List<Direccion> getAll();
-    String eliminaLogica(long id);
+    String eliminacionLogica(long id);
 }

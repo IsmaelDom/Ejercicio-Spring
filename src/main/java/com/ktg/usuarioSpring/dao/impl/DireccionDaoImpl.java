@@ -73,7 +73,7 @@ public class DireccionDaoImpl implements IDireccionDao {
     }
 
     @Override
-    public String eliminaLogica(long id) {
+    public String eliminacionLogica(long id) {
         /*String hqlUpdateDireccion = "update Direccion d set d.status = 0, d.usuario.status = 0 where d.id = :id";
         List<Usuario> resultado = entityManager.createQuery(hqlUpdateDireccion.toString()).setParameter("id", id)
                 .getResultList();
@@ -84,6 +84,6 @@ public class DireccionDaoImpl implements IDireccionDao {
         direccion.setStatus("0");
         direccion.getUsuario().setStatus("0");
         entityManager.merge(direccion);
-        return "Usuario eliminado";
+        return "Usuario " + direccion.getUsuario().getNombre() + ' ' + direccion.getUsuario().getApellido() + " eliminado.";
     }
 }

@@ -89,7 +89,7 @@ public class DireccionService {
             log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
             log.log(Level.SEVERE, "Hay valores nulos, errores: ");
             log.log(Level.SEVERE, result.toString());
-        }else if(!validaEnterosConString(direccion.getNo_exterior())){
+        }else if(!validaEnterosString(direccion.getNo_exterior())){
             result.put("no_exterior", "Ingrese solo números para el no. exterior.");
             log.log(Level.SEVERE, "####### Error al Insertar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
@@ -119,8 +119,7 @@ public class DireccionService {
                 direccion.getUsuario().setStatus("1");
                 direccion.setStatus("1");
                 Direccion dir = direccionDao.registrar(direccion);
-                result.put("exito","Usuario registrado correctamente");
-                result.put("usuario", dir);
+                result.put("exito","Usuario con correo " + dir.getUsuario().getCorreo() + " se ha registrado correctamente");
 
                 log.log(Level.INFO, "####### Usuario con Dirección Insertado Correctamente");
                 log.log(Level.INFO, dir.toString());
@@ -128,7 +127,8 @@ public class DireccionService {
                 if (correo != null){
                     log.log(Level.SEVERE,"El correo " + direccion.getUsuario().getCorreo() + " ya existe en la base de datos.");
                     result.put("correo","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
-                }else{
+                }
+                if (validaCurp != null){
                     log.log(Level.SEVERE,"La CURP " + direccion.getUsuario().getCurp() + " ya existe en la base de datos.");
                     result.put("curp","La CURP " + direccion.getUsuario().getCurp()+ " ya existe.");
                 }
@@ -159,7 +159,7 @@ public class DireccionService {
         return Pattern.matches(REGEXP, curp);
     }
 
-    private boolean validaEnterosConString(String cadena){
+    private boolean validaEnterosString(String cadena){
         String REGEXP = "^\\d+$";
         log.log(Level.INFO,"###### Método validaEnterosConString devuelve: " + Pattern.matches(REGEXP, cadena) + " ######");
         return Pattern.matches(REGEXP, cadena);
@@ -222,7 +222,7 @@ public class DireccionService {
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, "####### Hay campos null errores:");
             log.log(Level.SEVERE, result.toString());
-        }else if(!validaEnterosConString(direccion.getNo_exterior())){
+        }else if(!validaEnterosString(direccion.getNo_exterior())){
             result.put("no_exterior", "Ingrese solo números para el no. exterior.");
             log.log(Level.SEVERE, "####### Error al Editar Usuario con Dirección #####");
             log.log(Level.SEVERE, result.toString());
@@ -261,7 +261,8 @@ public class DireccionService {
                 if (!correoRepetido){
                     log.log(Level.SEVERE,"El correo " + direccion.getUsuario().getCorreo() + " ya existe en la base de datos.");
                     result.put("correo","El correo " + direccion.getUsuario().getCorreo() + " ya existe, intente con otro.");
-                }else{
+                }
+                if (!curpRepetida){
                     log.log(Level.SEVERE,"La CURP " + direccion.getUsuario().getCurp() + " ya existe en la base de datos.");
                     result.put("curp","La CURP " + direccion.getUsuario().getCurp()+ " ya existe.");
                 }
@@ -316,10 +317,10 @@ public class DireccionService {
         if(validaDireccion == null){
             result.put("error", "El usuario con id: " + id +" no existe.");
         }else{
-            String dir = direccionDao.eliminaLogica(id);
-            result.put("exito", "Usuario con id " + id + " eliminado correctamente");
+            String dir = direccionDao.eliminacionLogica(id);
+            result.put("exito", dir);
             log.log(Level.INFO, "####### Usuario con Dirección Eliminado Correctamente");
-            log.log(Level.INFO, dir.toString());
+            log.log(Level.INFO, dir);
         }
         log.log(Level.INFO, "Metodo eliminacionLogica devuelve: " + result);
         return result;

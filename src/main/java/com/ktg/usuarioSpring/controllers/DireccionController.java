@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +70,7 @@ public class DireccionController {
     ResponseEntity<?> registrar(@RequestBody Direccion direccion){
         Map<String, Object> dir =  direccionService.registrar(direccion);
 
-        if(dir.equals("usuario") || dir.containsKey("usuario")){
+        if(dir.containsKey("exito")){
             return new ResponseEntity<Map<String, Object>>(dir, HttpStatus.CREATED);
         }
         return new ResponseEntity<Map<String, Object>>(dir, HttpStatus.NOT_FOUND);
@@ -110,7 +109,6 @@ public class DireccionController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-        //ResponseEntity maneja respuestas HTTP
     ResponseEntity<?> eliminacionLogica(@PathVariable long id){
         Map<String, Object> dir =  direccionService.eliminacionLogica(id);
         if(dir.containsKey("exito")){
